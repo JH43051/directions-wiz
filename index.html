@@ -5,13 +5,131 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Driving Directions & Maps | DirectionsWiz</title>
+	<title>Directions Wiz | Driving Directions & Maps</title>
 	<link rel="stylesheet" href="style.css">
 	<script src="script.js"></script>
 </head>
 
 <body>
+	<header>
+		<h3 id="browserGreet"></h3>
+	</header>
 
+	<main>
+		<div id="map">
+			<div id="inputArea">
+				<div id="mapTabs">
+					<a href="#" id="tabMap" class="inactive">Map</a>
+					<a href="#" id="tabDirections" class="active">Directions</a>
+				</div>
+
+				<form id="formDirections" class="mapForm radius" action="/?v=results" method="post">
+					<h1>Get Driving Directions</h1>
+					<button type="button" class="rotate radius" id="rotate-directions"></button>
+					<input type="text" name="location-start" class="location-start radius" id="location-start"
+						value="Enter Address, Business or Landmark" onfocus="this.value='';" /><br />
+					<input type="hidden" name="location-start-position" class="location-start-position"
+						id="location-start-position" value="" />
+					<input type="text" name="location-finish" class="location-finish radius" id="location-finish"
+						value="Enter Address, Business or Landmark" onfocus="this.value='';" />
+					<input type="hidden" name="location-finish-position" class="location-finish-position"
+						id="location-finish-position" value="" />
+					<button type="button" class="map-main-button radius" onclick="initiateProcess('directions',0,'firefox');">Get
+						Directions</button>
+					<input type="hidden" name="search-type" value="directions" />
+				</form>
+
+				<form id="formMap" class="mapForm inactive radius" action="/?v=results" method="post">
+					<h1>Search Map</h1>
+					<div class="icon"></div>
+					<input type="text" name="location-find" class="map-top-directions radius" id="location-find"
+						value="Enter Address or City" onfocus="this.value='';" />
+					<button type="button" class="map-main-button radius"
+						onclick="initiateProcess('map',0,'firefox');">Search</button>
+					<input type="hidden" name="location-find-position" class="location-find-position" id="location-find-position"
+						value="" />
+					<input type="hidden" name="search-type" value="map" />
+				</form>
+
+				<div id="details-area" class="radius">
+					<div class="main-ad-300-250"></div>
+				</div>
+			</div> <!-- #inputArea -->
+			<div id="mapArea"></div>
+		</div> <!-- #map -->
+
+		<div id="links">
+			<ul>
+				<li><a href="#">Use Traffic Reports for Safer Driving</a></li>
+				<li><a href="#">Map Planning</a></li>
+				<li><a href="#">Map Providers</a></li>
+				<li><a href="#">Benefits of Online Maps</a></li>
+			</ul>
+		</div>
+
+		<div id="content">
+			<div id="contentMaps">
+				<h1>Maps</h1>
+				<img src="./images/22fab07f361159e646b4eda66a2b982e.jpg">
+				<p>
+					Online Maps take you to your destinations with ease and security.
+					<br><br>
+					Now make your every journey a completely hassle free and enjoyable
+					experience with online maps. From finding specific locations, driving
+					directions and neighborhood viewing, it helps you pursuing effective
+					time management by knowing the time and distance to and from the
+					locations.
+					<br><br>
+					MapsOnline.us's user friendly interface is accessible to all,
+					understandable to even non-GIS experts, offering high quality and
+					fast data visualization for locations and driving directions. You
+					can access the online maps portal anytime, from any device.
+					<br><br>
+					Online maps are continually updated, with addition and changes to existing
+					data base, enabling you experience accurate information every time
+					you log in.
+				</p>
+			</div>
+			<div id="contentDirections">
+				<h1>Directions</h1>
+				<img src="./images/1576591.jpg">
+				<p>
+					No need to worry about searching locations and reaching your
+					destinations. Now you have a reliable driving guide that is
+					accessible 24/7.
+					<br><br>
+					Whether it's about searching locations,
+					knowing alternative routes and determining travel time and
+					distances between areas, you can plan everything ahead of your
+					journey through online mapping portals that generate visualization
+					of your pertaining search.
+					<br><br>
+					Instantly know about your searched
+					queries and keep your traveling stress free and secure. Online
+					mapping, as per defined search criteria, brings accurate and
+					updated information to you in few clicks. It allows cheaper,
+					more frequent and efficient data updates, custom map content
+					and availability of geographic information.
+				</p>
+			</div>
+		</div>
+	</main>
+
+	<footer>
+		<p>
+			©2019. Pwnage, LLC. All Rights Reserved. DirectionsWiz.com
+			<br>
+			<a href="#">About Us</a> | <a href="#">Contact Us</a> |
+			<a href="#">Privacy Policy</a> | <a href="#">Terms and Conditions</a> |
+			<a href="#">Advertising Disclaimer</a> | <a href="#">Search Disclaimer</a> |
+			<a href="#">Removal Request</a>
+			<br>
+			Disclaimer: All trademarks are the property of their respective
+			owners. No affiliation or endorsement of MapQuest, Map Quest,
+			MapQuest.com, Yahoo.com, Google, Google, or GoogleMaps.com is
+			intended or implied.
+		</p>
+	</footer>
 </body>
 
 </html>
