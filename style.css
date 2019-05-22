@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 * {
 	margin: 0px;
 	padding: 0px;
 	font-family: 'Open Sans', sans-serif;
+	letter-spacing: -.01em;
 }
 
 header {
 	min-height: 35px;
-	border-bottom: 2px solid #000000;
+	border-bottom: 2px solid #222222;
 }
 
 header h3 {
@@ -18,18 +20,18 @@ header h3 {
 
 main {
 	background: #ffffff url(https://cdnhostpub-idcnetworks.netdna-ssl.com/images/overlays/dark_line_10.png);
-	border-bottom: 2px solid #000000;
+	border-bottom: 2px solid #222222;
 }
 
-main #map {
+#map {
 	height: 96vh;
-	background-color: aquamarine;
-	border-bottom: 2px solid #000000;
+	background-color: #c9efbb;
+	border-bottom: 2px solid #222222;
 	box-shadow: 0px 3px 3px lightgray;
 	position: relative;
 }
 
-main #map #inputArea {
+#inputArea {
     float: left;
     position: absolute;
     left: 30px;
@@ -38,17 +40,17 @@ main #map #inputArea {
     width: 470px;
 }
 
-main #map #inputArea #mapTabs {
+#mapTabs {
     margin: 25px 0 3px 15px;
     padding: 1px;
 }
 
-main #map #inputArea #mapTabs #tabMap, #tabDirections {
+#tabMap, #tabDirections {
     padding: 7px 30px;
     margin: 0;
     text-decoration: none;
 		border-radius: 10px 10px 0px 0px;
-		box-shadow: 10px 10px 5px rgba(90, 90, 90, 0.1);
+		box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
 }
 
 .active, .inactive:hover {
@@ -61,52 +63,237 @@ main #map #inputArea #mapTabs #tabMap, #tabDirections {
 	color: #ffffff;
 }
 
-main #map #inputArea #formDirections {
+#formDirections {
 	position: absolute;
 	left: 0px;
   top: 51.5px;
   z-index: 110;
 }
 
-main #map #inputArea #formMap {
+#locationStart, #locationFinish, #locationFind {
+	width: 94%;
+	height: 50px;
+	border: 1px solid #a5a5a5;
+	border-radius: 10px;
+	margin: 10px 0px 5px 0px;
+	padding-left: 20px;
+}
+
+#formMap {
 	position: absolute;
-	z-index: 105; /*make me higher or lower to swicth tabs*/
 }
 
-main #map #inputArea .mapForm {
-		width: 388px;
-    margin: 0 auto 0 auto;
-    padding: 40px 40px;
-    background: rgba(255,255,255,1.0);
-		border-radius: 10px;
-		height: 300px;
-		box-shadow: 10px 10px 5px rgba(90, 90, 90, 0.1);
+#rotateDirections {
+  position: absolute;
+  left: 5px;
+  top: 125px;
+  border: none;
+	background: none;
+	cursor: pointer;
 }
 
-main #links {
+#rotateIcon {
+	font-family: 'Material Icons';
+	color: #5b514e;
+	font-size: 2.5em;
+}
+
+#startIcon {
+	font-family: 'Material Icons';
+	color: #95c93d;
+	font-size: 2.5em;
+	position: absolute;
+  left: 2px;
+  top: 84px;
+}
+
+#finishIcon {
+	font-family: 'Material Icons';
+	color: #ee3432;
+	font-size: 2.5em;
+	position: absolute;
+  left: 2px;
+  top: 154px;
+}
+
+#mapIcon {
+	font-family: 'Material Icons';
+	color: #95c93d;
+	font-size: 2.5em;
+	position: absolute;
+  left: 2px;
+  top: 85px;
+}
+
+.mapForm {
+	width: 388px;
+  margin: 0 auto 0 auto;
+  padding: 40px 40px;
+  background: rgba(255,255,255,1.0);
+	border-radius: 10px;
+	height: 250px;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
 	text-align: center;
 }
 
-main #links ul {
+.mainButton {
+    width: 100%;
+    border: none;
+    background-color: #4c97f3;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 15px;
+    font-size: 24px;
+    /*text-shadow: 1px 1px #1d4a9d;*/
+		box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+    display: block;
+    text-align: center;
+		border-radius: 10px;
+		margin-top: 20px;
+		cursor: pointer;
+}
+
+#popUpBackground {
+	width: 100vw;
+	height: 100vh;
+	opacity: .5;
+	background-color: #222222;
+	z-index: 120;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+
+#searchingPopup {
+	width: 500px;
+	height: 200px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	z-index: 125;
+	position: fixed;
+	width: 690px;
+	height: 310px;
+	top: 50%;
+	left: 50%;
+	margin-top: -155px; /* Negative half of height. */
+	margin-left: -345px; /* Negative half of width. */
+}
+
+#searchingPopup h3, #directionsPopup h3, #mapPopup h3 {
+	color: #f7941d;
+	font-size: 2.8em;
+	font-weight: bold;
+	border-radius: 10px;
+	margin-top: 50px;
+}
+
+#searchingPopup p, #directionsPopup p, #mapPopup p {
+	font-size: 1.1em;
+	margin: 30px 75px 20px 75px;
+}
+
+#mapPopup, #directionsPopup {
+	width: 500px;
+	height: 200px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	z-index: 125;
+	position: fixed;
+	width: 690px;
+	height: 380px;
+	top: 50%;
+	left: 50%;
+	margin-top: -190px; /* Negative half of height. */
+	margin-left: -345px; /* Negative half of width. */
+}
+
+.popupCloseIcon {
+	font-family: "Material Icons";
+	color: #222222;
+	opacity: .3;
+	font-size: 2em;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	transition: opacity .3s;
+	cursor: pointer;
+}
+
+.popupCloseIcon:hover {
+	opacity: 1;
+}
+
+.show {
+	visibility: visible;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.popupButton {
+    width: 400px;
+		border: none;
+    background-color: #4c97f3;
+    color: #ffffff;
+    font-weight: 800;
+    padding: 30px 15px 15px 15px;
+    font-size: 2.8em;
+		line-height: .5em;
+    /*text-shadow: 1px 1px #1d4a9d;*/
+		box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+    display: block;
+    text-align: center;
+		border-radius: 10px;
+		margin: 20px auto 0px auto;
+		cursor: pointer;
+		transition: background-color 1s;
+}
+
+.popupButton:hover {
+	background-color: #f7941d;
+}
+
+.tagline {
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.chevrons {
+	font-family: "Material Icons";
+	font-size: 1em;
+	position: relative;
+	top: 10px;
+}
+
+#links {
+	text-align: center;
+}
+
+#links ul {
 	list-style: none;
 	margin: 20px 0px 20px 0px;
 }
 
-main #links ul li {
+#links ul li {
 	display: inline;
 	margin: 0px 10px 0px 10px;
 	
 }
 
-main #links ul li a {
+#links ul li a {
 	color: #0b84ab;
 }
 
-main #content {
+#content {
 	padding: 50px;
 }
 
-main #content #contentMaps, #contentDirections {
+#contentMaps, #contentDirections {
 	width: 90%;
 	min-height: 250px;
 	margin: 20px auto 20px auto;
@@ -118,19 +305,20 @@ main #content #contentMaps, #contentDirections {
 	transition: box-shadow .3s;
 }
 
-main #content #contentMaps:hover, #contentDirections:hover {
+#contentMaps:hover, #contentDirections:hover {
 	background-color: rgba(255, 255, 255, 1);
 	box-shadow: 2px 2px 3px lightgrey;
 }
 
-main #content img {
+#content img {
 	width: 248px;
 	height: 181px;
 	float: left;
 	margin-top: 20px;
 	border-radius: 10px;
 }
-main #content p {
+
+#content p {
 	clear: none;
 	padding: 20px 0px 25px 300px;
 }
@@ -146,6 +334,6 @@ footer p {
 }
 
 footer p a {
-	color: black;
+	color: #222222;
 }
 

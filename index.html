@@ -6,8 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<title>Directions Wiz | Driving Directions & Maps</title>
-	<link rel="stylesheet" href="style.css">
-	<script src="script.js"></script>
+	<link rel="stylesheet" href="./style.css">
+	<link	rel="stylesheet" href="./loading.css">
+	<script src="./script.js"></script>
 </head>
 
 <body>
@@ -23,37 +24,33 @@
 					<a href="#" id="tabDirections" class="active">Directions</a>
 				</div>
 
-				<form id="formDirections" class="mapForm radius" action="/?v=results" method="post">
-					<h1>Get Driving Directions</h1>
-					<button type="button" class="rotate radius" id="rotate-directions"></button>
-					<input type="text" name="location-start" class="location-start radius" id="location-start"
-						value="Enter Address, Business or Landmark" onfocus="this.value='';" /><br />
+				<form id="formDirections" class="mapForm" action="/?v=results" method="post">
+					<h2>Get Driving Directions</h2>
+					<button id="rotateDirections" type="button"><span id="rotateIcon">cached</span></button>
+					<span id="startIcon">place</span>
+					<input id="locationStart" type="text" name="location-start" 
+						placeholder="Enter Address, Business or Landmark" onfocus="this.value='';" /><br />
 					<input type="hidden" name="location-start-position" class="location-start-position"
 						id="location-start-position" value="" />
-					<input type="text" name="location-finish" class="location-finish radius" id="location-finish"
-						value="Enter Address, Business or Landmark" onfocus="this.value='';" />
+					<span id="finishIcon">place</span>
+					<input id="locationFinish" type="text" name="location-finish" 
+						placeholder="Enter Address, Business or Landmark" onfocus="this.value='';" />
 					<input type="hidden" name="location-finish-position" class="location-finish-position"
 						id="location-finish-position" value="" />
-					<button type="button" class="map-main-button radius" onclick="initiateProcess('directions',0,'firefox');">Get
-						Directions</button>
+					<button id="dirMainButton" class="mainButton" type="button">Get Directions</button>
 					<input type="hidden" name="search-type" value="directions" />
 				</form>
 
-				<form id="formMap" class="mapForm inactive radius" action="/?v=results" method="post">
-					<h1>Search Map</h1>
-					<div class="icon"></div>
-					<input type="text" name="location-find" class="map-top-directions radius" id="location-find"
-						value="Enter Address or City" onfocus="this.value='';" />
-					<button type="button" class="map-main-button radius"
-						onclick="initiateProcess('map',0,'firefox');">Search</button>
+				<form id="formMap" class="mapForm" action="/?v=results" method="post">
+					<h2>Search Map</h2>
+					<span id="mapIcon">place</span>
+					<input id="locationFind" type="text" name="location-find" 
+						placeholder="Enter Address or City" onfocus="this.value='';" />
+					<button id="mapMainButton" type="button" class="mainButton">Search</button>
 					<input type="hidden" name="location-find-position" class="location-find-position" id="location-find-position"
 						value="" />
 					<input type="hidden" name="search-type" value="map" />
 				</form>
-
-				<div id="details-area" class="radius">
-					<div class="main-ad-300-250"></div>
-				</div>
 			</div> <!-- #inputArea -->
 			<div id="mapArea"></div>
 		</div> <!-- #map -->
@@ -130,6 +127,56 @@
 			intended or implied.
 		</p>
 	</footer>
+
+	<!-- Pop Ups -->
+	<div id="popUpBackground" class="hide"></div>
+
+	<div id="searchingPopup" class="hide">
+		<h3>Finding Directions...</h3>
+		<div class="lds-grid">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+	<div id="directionsPopup" class="hide">
+		<h3>Directions Found</h3>
+		<span class="popupCloseIcon">highlight_off</span>
+		<button class="popupButton" type="button">
+			<span class="chevrons">fast_forward</span>
+				Continue
+			<span class="chevrons">fast_rewind</span>
+			<br>
+			<span class="tagline">(access full maps and driving directions)</span>
+		</button>
+		<p>
+			Install the New Free OnlineRouteFinder™ browser extension 
+			to get your driving directions and maps.
+		</p>
+	</div>
+
+	<div id="mapPopup" class="hide">
+		<h3>Map Found</h3>
+		<span class="popupCloseIcon">highlight_off</span>
+		<button class="popupButton" type="button">
+			<span class="chevrons">fast_forward</span>
+				Continue
+			<span class="chevrons">fast_rewind</span>
+			<br>
+			<span class="tagline">(access full maps and driving directions)</span>
+		</button>
+		<p>
+			Install the New Free OnlineRouteFinder™ browser extension 
+			to get your driving directions and maps.
+		</p>
+	</div>
 </body>
 
 </html>
