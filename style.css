@@ -18,8 +18,8 @@ header h3 {
 	padding-top: 4px;
 }
 
-main {
-	background: #ffffff url(https://cdnhostpub-idcnetworks.netdna-ssl.com/images/overlays/dark_line_10.png);
+#main {
+	background-image: url('./images/dark_line_10.png');
 	border-bottom: 2px solid #222222;
 }
 
@@ -122,7 +122,7 @@ main {
 	font-size: 2.5em;
 	position: absolute;
   left: 2px;
-  top: 85px;
+  top: 84px;
 }
 
 .mapForm {
@@ -165,8 +165,6 @@ main {
 }
 
 #searchingPopup {
-	width: 500px;
-	height: 200px;
 	background-color: #ffffff;
 	border-radius: 10px;
 	text-align: center;
@@ -195,8 +193,6 @@ main {
 }
 
 #mapPopup, #directionsPopup {
-	width: 500px;
-	height: 200px;
 	background-color: #ffffff;
 	border-radius: 10px;
 	text-align: center;
@@ -282,11 +278,28 @@ main {
 #links ul li {
 	display: inline;
 	margin: 0px 10px 0px 10px;
-	
+	color: #0b84ab;
+	border-bottom: 1px solid #0b84ab;
+	cursor: pointer;
+	transition: border-bottom-color;
 }
 
-#links ul li a {
-	color: #0b84ab;
+#links ul li:hover {
+	border-bottom: none;
+}
+
+.linksPopups {
+	max-width: 50%;
+	background-color: #ffffff;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	z-index: 125;
+	position: fixed;
+	top: 10%;
+	left: 50%;
+	margin-top: -200; /* Negative half of height. */
+	margin-left: -25%; /* Negative half of width. */
 }
 
 #content {
@@ -301,8 +314,7 @@ main {
 	background-color: rgba(255, 255, 255, 0);
 	border-radius: 10px;
 	box-shadow: 0px 0px 0px lightgrey;
-	transition: background-color .3s;
-	transition: box-shadow .3s;
+	transition: box-shadow .3s, background-color .3s;
 }
 
 #contentMaps:hover, #contentDirections:hover {
@@ -333,7 +345,15 @@ footer p {
 	padding: 10px 0px 10px 100px;
 }
 
-footer p a {
-	color: #222222;
+footer ul {
+	font-size: .7em;
+	list-style: none;
+	padding: 0px 0px 0px 100px;
+}
+
+footer ul li {
+	display: inline;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
