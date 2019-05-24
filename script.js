@@ -282,6 +282,7 @@ function findMap() {
 		marker = new H.map.Marker(position);
 		map.addObject(marker);
 		}
+		map.setCenter(position, true);
 	};
 	// Get an instance of the geocoding service:
 	var geocoder = platform.getGeocodingService();
