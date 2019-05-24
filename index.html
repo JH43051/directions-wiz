@@ -9,7 +9,6 @@
 	<link rel="stylesheet" href="./style.css">
 	<link	rel="stylesheet" href="./loading.css">
 	<script src="./script.js"></script>
-	<script src="./mapping.js"></script>
 	<!-- Here.com map libraries  -->
 	<script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
   type="text/javascript" charset="utf-8"></script>
@@ -43,15 +42,10 @@
 					<span id="startIcon" class="material-icons">place</span>
 					<input id="locationStart" type="text" name="location-start" 
 						placeholder="Enter Address, Business or Landmark" onfocus="this.value='';" /><br />
-					<input type="hidden" name="location-start-position" class="location-start-position"
-						id="location-start-position" value="" />
 					<span id="finishIcon" class="material-icons">place</span>
 					<input id="locationFinish" type="text" name="location-finish" 
 						placeholder="Enter Address, Business or Landmark" onfocus="this.value='';" />
-					<input type="hidden" name="location-finish-position" class="location-finish-position"
-						id="location-finish-position" value="" />
 					<button id="dirMainButton" class="mainButton" type="button">Get Directions</button>
-					<input type="hidden" name="search-type" value="directions" />
 				</form>
 
 				<form id="formMap" class="mapForm" action="/?v=results" method="post">
@@ -60,9 +54,6 @@
 					<input id="locationFind" type="text" name="location-find" 
 						placeholder="Enter Address or City" onfocus="this.value='';" />
 					<button id="mapMainButton" type="button" class="mainButton">Search</button>
-					<input type="hidden" name="location-find-position" class="location-find-position" id="location-find-position"
-						value="" />
-					<input type="hidden" name="search-type" value="map" />
 				</form>
 			</div> <!-- #inputArea -->
 			<div id="mapArea"></div>
