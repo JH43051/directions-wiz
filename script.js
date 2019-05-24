@@ -233,8 +233,10 @@ function popupCloseHandler() {
 
 // Authenticates communication with Here.com backend services
 var platform = new H.service.Platform({
+	//'useCIT': true,
   'app_id': 'EtNIgjLba6MC6edi57vR',
-  'app_code': 'powLhtVer-MQAOPqWwgwsA'
+  'app_code': 'powLhtVer-MQAOPqWwgwsA',
+	'useHTTPS': true
 });
 
 // Obtain the default map types from the platform object:
@@ -267,10 +269,11 @@ var behavior = new H.mapevents.Behavior(mapEvents);
 
 
 function findMap() {
+	
 	// Create the parameters for the geocoding request:
 	var geocodingParams = {
 			searchText: '200 S Mathilda Ave, Sunnyvale, CA'
-	};
+		};
 
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
@@ -297,6 +300,6 @@ function findMap() {
 	geocoder.geocode(geocodingParams, onResult, function(e) {
 		alert(e);
 	});
-	}
+}
 
 }; // window.onload
