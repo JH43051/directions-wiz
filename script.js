@@ -262,12 +262,12 @@ var behavior = new H.mapevents.Behavior(mapEvents);
 
 
 function findMap() {
-	
+	// Grab text from input field
+	var input = document.getElementById("locationFind").value;
 	// Create the parameters for the geocoding request:
 	var geocodingParams = {
-			searchText: '200 S Mathilda Ave, Sunnyvale, CA'
+			searchText: input
 		};
-
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
 		var locations = result.Response.View[0].Result,
@@ -283,10 +283,8 @@ function findMap() {
 		map.addObject(marker);
 		}
 	};
-
 	// Get an instance of the geocoding service:
 	var geocoder = platform.getGeocodingService();
-
 	// Call the geocode method with the geocoding parameters,
 	// the callback and an error callback function (called if a
 	// communication error occurs):
