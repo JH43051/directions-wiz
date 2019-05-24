@@ -233,10 +233,9 @@ function popupCloseHandler() {
 
 // Authenticates communication with Here.com backend services
 var platform = new H.service.Platform({
-	//'useCIT': true,
-  'app_id': 'EtNIgjLba6MC6edi57vR',
-  'app_code': 'powLhtVer-MQAOPqWwgwsA',
-	'useHTTPS': true
+  app_id: 'EtNIgjLba6MC6edi57vR',
+  app_code: 'powLhtVer-MQAOPqWwgwsA',
+	useHTTPS: true
 });
 
 // Obtain the default map types from the platform object:
@@ -257,12 +256,6 @@ var ui = H.ui.UI.createDefault(map, defaultLayers);
 
 // Enable the event system on the map instance:
 var mapEvents = new H.mapevents.MapEvents(map);
-
-// Map event listener:
-map.addEventListener('tap', function(evt) {
-  // Log 'tap' and 'mouse' events:
-  console.log(evt.type, evt.currentPointer.type); 
-});
 
 // Instantiate the default behavior, providing the mapEvents object:
 var behavior = new H.mapevents.Behavior(mapEvents);
