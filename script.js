@@ -297,14 +297,63 @@ function findMap() {
 
 
 function findDirections() {
+	var startPoint = "";
+	var locationStart = document.getElementById("locationStart").value;
+	var endPoint = "";
+	var locationFinish = document.getElementById("locationFinish").value;
+	// Grab text from input field
+	var geocodingParams = {
+			searchText: locationStart
+	};
+	// Define a callback function to process the geocoding response:
+	var onResult = function(result) {
+		var locations = result.Response.View[0].Result;
+		startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
+		localStorage.setItem('startPoint', startPoint);
+	};
+
+	var onError = function(e) {
+		alert(e);
+	}
+	// Get an instance of the geocoding service:
+	var geocoder = platform.getGeocodingService();
+	// Call the geocode method with the geocoding parameters,
+	// the callback and an error callback function (called if a
+	// communication error occurs):
+	geocoder.geocode(geocodingParams, onResult, onError);
+	startPoint = localStorage.getItem('startPoint');
+	localStorage.removeItem('startPoint');
+
+	geocodingParams = {
+			searchText: locationFinish
+	};
+
+	onResult = function(result) {
+		var locations = result.Response.View[0].Result;
+		endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
+		localStorage.setItem('endPoint', endPoint);
+	};
+
+	// Get an instance of the geocoding service:
+	geocoder = platform.getGeocodingService();
+	// Call the geocode method with the geocoding parameters,
+	// the callback and an error callback function (called if a
+	// communication error occurs):
+	geocoder.geocode(geocodingParams, onResult, onError);
+	endPoint = localStorage.getItem('endPoint');
+	localStorage.removeItem('endPoint');
+
+	console.log(startPoint);
+	console.log(endPoint);
+
 	// Create the parameters for the routing request:
 	var routingParameters = {
 		// The routing mode:
 		'mode': 'fastest;car',
 		// The start point of the route:
-		'waypoint0': 'geo!50.1120423728813,8.68340740740811',
+		'waypoint0': startPoint,
 		// The end point of the route:
-		'waypoint1': 'geo!52.5309916298853,13.3846220493377',
+		'waypoint1': endPoint,
 		// To retrieve the shape of the route we choose the route
 		// representation mode 'display'
 		'representation': 'display'
@@ -362,4 +411,10 @@ function findDirections() {
 			alert(error.message);
 		});
 }
+
+
+
+
+
+
 }; // window.onload
