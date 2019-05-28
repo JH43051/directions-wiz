@@ -248,6 +248,7 @@ header h3 {
 		margin: 20px auto 0px auto;
 		cursor: pointer;
 		transition: background-color 1s;
+		text-decoration: none;
 }
 
 .popupButton:hover {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Directions Wiz | Results</title>
+	<link rel="stylesheet" href="./results.css">
+	<!-- Here.com map libraries  -->
+	<script src="http://js.api.here.com/v3/3.0/mapsjs-core.js"
+  type="text/javascript" charset="utf-8"></script>
+	<script src="http://js.api.here.com/v3/3.0/mapsjs-service.js"
+  type="text/javascript" charset="utf-8"></script>
+	<script src="http://js.api.here.com/v3/3.0/mapsjs-ui.js" 
+      type="text/javascript" charset="utf-8"></script>
+	<script src="http://js.api.here.com/v3/3.0/mapsjs-mapevents.js" 
+     type="text/javascript" charset="utf-8"></script>
+	<!-- Here.com stylesheets -->
+	<link rel="stylesheet" type="text/css" 
+      href="http://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+</head>
+
+<body>
+	<div id="topBlock">
+		<div id="topAdvert"></div>
+	</div>
+
+	<div id="barBlock">
+		<a href="./index.html" id="backButton">
+			<span class="chevrons material-icons">fast_rewind</span>
+			<p>Back</p>
+		</a>
+		<div id="middleBar">
+			<div id="barAdvert"></div>
+		</div>
+	</div>
+
+	<div id="mainBlock">
+		<div id="sideBlock">
+			<div id="sideAdvert"></div>
+		</div>
+
+		<div id="resultMap">
+		</div>
+	</div>
+
+	<script src="./resultsDirections.js"></script>
+</body>
+
+</html>

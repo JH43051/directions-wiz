@@ -25,11 +25,15 @@ var termsPopup = document.getElementById("termsPopup");
 var advertisingPopup = document.getElementById("advertisingPopup");
 var disclaimerPopup = document.getElementById("disclaimerPopup");
 var requestPopup = document.getElementById("requestPopup");
-
 ////////////////////////////////////////////////////////////////////
-// Procedural Function Calls
+// Procedural Code
 ////////////////////////////////////////////////////////////////////
 
+// Clear input fields
+document.getElementById("locationFind").value = "";
+document.getElementById("locationStart").value = "";
+document.getElementById("locationFinish").value = "";
+// Listener function calls
 browserGreeting();
 tabListener();
 mainButtonListener();
@@ -97,6 +101,7 @@ function directionsPopupHandler() {
 		directionsPopup.getAttributeNode("class").value = "show";
 	}, 2000);
 	findDirections();
+	popupCloseHandler();
 }
 
 function mapPopupHandler() {
@@ -107,6 +112,7 @@ function mapPopupHandler() {
 		mapPopup.getAttributeNode("class").value = "show";
 	}, 2000);
 	findMap();
+	popupCloseHandler();
 }
 
 function linksPopupListener() {
@@ -182,25 +188,17 @@ function advertisingPopupHandler() {
 	advertisingPopup.getAttributeNode("class").value = "linksPopups show";
 }
 
+
 function disclaimerPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	disclaimerPopup.getAttributeNode("class").value = "linksPopups show";
 }
 
+
 function requestPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	requestPopup.getAttributeNode("class").value = "linksPopups show";
 }
-
-
-
-
-
-
-
-
-
-
 
 
 function popupCloseListener() {
@@ -210,6 +208,7 @@ function popupCloseListener() {
 		popupCloseIcon[i].onclick = popupCloseHandler;
 	}
 }
+
 // Closes all popups when clicking close. Add each new popup to this
 function popupCloseHandler() {
 	popUpBackground.getAttributeNode("class").value = "hide";
@@ -228,11 +227,15 @@ function popupCloseHandler() {
 	requestPopup.getAttributeNode("class").value = "linksPopups hide";
 }
 
+
+
+
+
 ////////////////////////////////////////////////////////////////////////
 // Mapping Functionality
 ////////////////////////////////////////////////////////////////////////
 
-// Authenticates communication with Here.com backend services
+// Authenticate communication with Here.com backend services
 var platform = new H.service.Platform({
   'app_id': 'EtNIgjLba6MC6edi57vR',
   'app_code': 'powLhtVer-MQAOPqWwgwsA',
@@ -248,7 +251,7 @@ var map = new H.Map(
   defaultLayers.normal.map,
   {
     zoom: 10,
-    center: { lat: 52.5, lng: 13.4 } // Berlin (change me)
+    center: {lat: 40.76, lng: -73.98} // NYC
   }
 );
 
@@ -263,28 +266,19 @@ var behavior = new H.mapevents.Behavior(mapEvents);
 
 
 function findMap() {
-	// Grab text from input field
 	var input = document.getElementById("locationFind").value;
-	// Create the parameters for the geocoding request:
+// Create the parameters for the geocoding request:
 	var geocodingParams = {
 			searchText: input
 		};
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
-		var locations = result.Response.View[0].Result,
-			position,
-			marker;
-		// Add a marker for each location found
-		for (i = 0;  i < locations.length; i++) {
-		position = {
-			lat: locations[i].Location.DisplayPosition.Latitude,
-			lng: locations[i].Location.DisplayPosition.Longitude
-		};
-		marker = new H.map.Marker(position);
-		map.addObject(marker);
-		}
-		map.setCenter(position, true);
-	};
+		var locations = result.Response.View[0].Result;
+		var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
+		var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
+		localStorage.setItem('mapPointLat', mapPointLat);
+		localStorage.setItem('mapPointLong', mapPointLong);
+	}
 	// Get an instance of the geocoding service:
 	var geocoder = platform.getGeocodingService();
 	// Call the geocode method with the geocoding parameters,
@@ -298,123 +292,36 @@ function findMap() {
 
 function findDirections() {
 	var startPoint = "";
-	var locationStart = document.getElementById("locationStart").value;
 	var endPoint = "";
-	var locationFinish = document.getElementById("locationFinish").value;
-	// Grab text from input field
+	var geocoder = platform.getGeocodingService();
 	var geocodingParams = {
-			searchText: locationStart
+		searchText: document.getElementById("locationStart").value
 	};
-	// Define a callback function to process the geocoding response:
+	// Set callback function to grab and format lat and long of start location
+	// and store them in local storage
 	var onResult = function(result) {
 		var locations = result.Response.View[0].Result;
 		startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
 		localStorage.setItem('startPoint', startPoint);
 	};
-
+	// Geocode error handler
 	var onError = function(e) {
 		alert(e);
 	}
-	// Get an instance of the geocoding service:
-	var geocoder = platform.getGeocodingService();
-	// Call the geocode method with the geocoding parameters,
-	// the callback and an error callback function (called if a
-	// communication error occurs):
+	// Call geocode
 	geocoder.geocode(geocodingParams, onResult, onError);
-	startPoint = localStorage.getItem('startPoint');
-	localStorage.removeItem('startPoint');
-
+	// Change geocode parameters to the ending location input field
 	geocodingParams = {
-			searchText: locationFinish
+		searchText: document.getElementById("locationFinish").value
 	};
-
+	// Change callback function to grab end location
 	onResult = function(result) {
 		var locations = result.Response.View[0].Result;
 		endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
 		localStorage.setItem('endPoint', endPoint);
 	};
-
-	// Get an instance of the geocoding service:
-	geocoder = platform.getGeocodingService();
-	// Call the geocode method with the geocoding parameters,
-	// the callback and an error callback function (called if a
-	// communication error occurs):
+	// Call geocode again
 	geocoder.geocode(geocodingParams, onResult, onError);
-	endPoint = localStorage.getItem('endPoint');
-	localStorage.removeItem('endPoint');
-
-	console.log(startPoint);
-	console.log(endPoint);
-
-	// Create the parameters for the routing request:
-	var routingParameters = {
-		// The routing mode:
-		'mode': 'fastest;car',
-		// The start point of the route:
-		'waypoint0': startPoint,
-		// The end point of the route:
-		'waypoint1': endPoint,
-		// To retrieve the shape of the route we choose the route
-		// representation mode 'display'
-		'representation': 'display'
-	};
-	// Define a callback function to process the routing response:
-	var onResult = function(result) {
-		var route,
-			routeShape,
-			startPoint,
-			endPoint,
-			linestring;
-		if(result.response.route) {
-		// Pick the first route from the response:
-		route = result.response.route[0];
-		// Pick the route's shape:
-		routeShape = route.shape;
-		// Create a linestring to use as a point source for the route line
-		linestring = new H.geo.LineString();
-		// Push all the points in the shape into the linestring:
-		routeShape.forEach(function(point) {
-			var parts = point.split(',');
-			linestring.pushLatLngAlt(parts[0], parts[1]);
-		});
-		// Retrieve the mapped positions of the requested waypoints:
-		startPoint = route.waypoint[0].mappedPosition;
-		endPoint = route.waypoint[1].mappedPosition;
-		// Create a polyline to display the route:
-		var routeLine = new H.map.Polyline(linestring, {
-			style: { strokeColor: '#4c97f3', lineWidth: 10 },
-			arrows: { fillColor: '#ffffff', frequency: 2, width: 0.8, length: 0.7 }
-		});
-		// Create a marker for the start point:
-		var startMarker = new H.map.Marker({
-			lat: startPoint.latitude,
-			lng: startPoint.longitude
-		});
-		// Create a marker for the end point:
-		var endMarker = new H.map.Marker({
-			lat: endPoint.latitude,
-			lng: endPoint.longitude
-		});
-		// Add the route polyline and the two markers to the map:
-		map.addObjects([routeLine, startMarker, endMarker]);
-		// Set the map's viewport to make the whole route visible:
-		map.setViewBounds(routeLine.getBounds());
-		}
-	};
-	// Get an instance of the routing service:
-	var router = platform.getRoutingService();
-	// Call calculateRoute() with the routing parameters,
-	// the callback and an error callback function (called if a
-	// communication error occurs):
-	router.calculateRoute(routingParameters, onResult,
-		function(error) {
-			alert(error.message);
-		});
 }
-
-
-
-
-
 
 }; // window.onload

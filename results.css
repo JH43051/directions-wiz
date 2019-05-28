@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Open Sans', sans-serif;
+	letter-spacing: -.01em;
+}
+
+#topBlock {
+	min-height: 90px;
+	border-bottom: 2px solid #222222;
+}
+
+#topAdvert {
+	height: 90px;
+}
+
+#barBlock {
+	min-height: 40px;
+}
+
+#middleBar {
+	background-color: #1f262a;
+	height: 40px;
+}
+
+#barAdvert {
+	height: 40px;
+}
+
+#backButton {
+	float: left;
+	width: 400px;
+	min-height: 40px;
+	background-color: #4c97f3;
+	color: #ffffff;
+	font-size: 1.1em;
+	font-weight: 700;
+	border: none;
+	text-decoration: none;
+	text-align: center;
+	display: block;
+	cursor: pointer;
+}
+
+#backButton p {
+	display: inline;
+	position: relative;
+	top: 5px;
+}
+
+#sideBlock {
+	float: left;
+	width: 400px;
+	background-color: #ffffff;
+	overflow: auto;
+}
+
+#sideAdvert {
+	width: 300px;
+	height: 600px;
+	margin: auto;
+	background-color: #f8f8f8;
+}
+
+#resultMap {
+	height: 86vh;
+	overflow: auto;
+	background-color: #c9efbb;
+}
+
+.chevrons {
+	font-family: "Material Icons";
+	font-size: 1em;
+	position: relative;
+	top: 8px;
+}
