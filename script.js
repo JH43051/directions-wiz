@@ -25,6 +25,10 @@ var termsPopup = document.getElementById("termsPopup");
 var advertisingPopup = document.getElementById("advertisingPopup");
 var disclaimerPopup = document.getElementById("disclaimerPopup");
 var requestPopup = document.getElementById("requestPopup");
+var locationStart = document.getElementById("locationStart");
+var locationFinish = document.getElementById("locationFinish");
+
+
 ////////////////////////////////////////////////////////////////////
 // Procedural Code
 ////////////////////////////////////////////////////////////////////
@@ -39,6 +43,8 @@ tabListener();
 mainButtonListener();
 linksPopupListener()
 popupCloseListener();
+startEndSwitchListener();
+
 
 ////////////////////////////////////////////////////////////////////
 // Functions
@@ -94,24 +100,28 @@ function mainButtonListener() {
 }
 
 function directionsPopupHandler() {
+	findDirections();
+	var searchingTitle = document.getElementById("searchingTitle");
+	searchingTitle.innerHTML = "Finding Directions...";
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
 	setTimeout(function() {
 		searchingPopup.getAttributeNode("class").value = "hide";
 		directionsPopup.getAttributeNode("class").value = "show";
 	}, 2000);
-	findDirections();
 	popupCloseHandler();
 }
 
 function mapPopupHandler() {
+	findMap();
+	var searchingTitle = document.getElementById("searchingTitle");
+	searchingTitle.innerHTML = "Finding Map...";
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
 	setTimeout(function() {
 		searchingPopup.getAttributeNode("class").value = "hide";
 		mapPopup.getAttributeNode("class").value = "show";
-	}, 2000);
-	findMap();
+	}, 3000);
 	popupCloseHandler();
 }
 
@@ -228,6 +238,28 @@ function popupCloseHandler() {
 }
 
 
+function startEndSwitchListener() {
+	var rotateDirections = document.getElementById("rotateDirections");
+	rotateDirections.onclick = startEndSwitchHandler;
+}
+
+
+function startEndSwitchHandler() {
+	var startIcon = document.getElementById("startIcon");
+	var finishIcon = document.getElementById("finishIcon");
+
+	if (locationStart == document.getElementById("locationStart")) {
+		locationStart = document.getElementById("locationFinish");
+		locationFinish = document.getElementById("locationStart");
+		startIcon.style.color = "#ee3432";
+		finishIcon.style.color = "#95c93d";
+	} else if (locationStart == document.getElementById("locationFinish")) {
+		locationStart = document.getElementById("locationStart");
+		locationFinish = document.getElementById("locationFinish");
+		startIcon.style.color = "#95c93d";
+		finishIcon.style.color = "#ee3432";
+	}
+}
 
 
 
@@ -273,11 +305,16 @@ function findMap() {
 		};
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
-		var locations = result.Response.View[0].Result;
-		var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
-		var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
-		localStorage.setItem('mapPointLat', mapPointLat);
-		localStorage.setItem('mapPointLong', mapPointLong);
+		if (result.Response.View[0] == undefined) {
+			mapPopup.childNodes[1].innerHTML = "No Map Found";
+			mapPopup.childNodes[5].attributes[0].value = "./results-none.html";
+		} else {
+			var locations = result.Response.View[0].Result;
+			var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
+			var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
+			localStorage.setItem('mapPointLat', mapPointLat);
+			localStorage.setItem('mapPointLong', mapPointLong);
+		}
 	}
 	// Get an instance of the geocoding service:
 	var geocoder = platform.getGeocodingService();
@@ -295,14 +332,19 @@ function findDirections() {
 	var endPoint = "";
 	var geocoder = platform.getGeocodingService();
 	var geocodingParams = {
-		searchText: document.getElementById("locationStart").value
+		searchText: locationStart.value
 	};
 	// Set callback function to grab and format lat and long of start location
 	// and store them in local storage
 	var onResult = function(result) {
-		var locations = result.Response.View[0].Result;
-		startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
-		localStorage.setItem('startPoint', startPoint);
+		if (result.Response.View[0] == undefined) {
+			directionsPopup.childNodes[1].innerHTML = "No Directions Found";
+			directionsPopup.childNodes[5].attributes[0].value = "./results-none.html";
+		} else {
+			var locations = result.Response.View[0].Result;
+			startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
+			localStorage.setItem('startPoint', startPoint);
+		}
 	};
 	// Geocode error handler
 	var onError = function(e) {
@@ -312,16 +354,20 @@ function findDirections() {
 	geocoder.geocode(geocodingParams, onResult, onError);
 	// Change geocode parameters to the ending location input field
 	geocodingParams = {
-		searchText: document.getElementById("locationFinish").value
+		searchText: locationFinish.value
 	};
 	// Change callback function to grab end location
 	onResult = function(result) {
-		var locations = result.Response.View[0].Result;
-		endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
-		localStorage.setItem('endPoint', endPoint);
+		if (result.Response.View[0] == undefined) {
+			directionsPopup.childNodes[1].innerHTML = "No Directions Found";
+			directionsPopup.childNodes[5].attributes[0].value = "./results-none.html";
+		} else {
+			var locations = result.Response.View[0].Result;
+			endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
+			localStorage.setItem('endPoint', endPoint);
+		}
 	};
 	// Call geocode again
 	geocoder.geocode(geocodingParams, onResult, onError);
 }
-
-}; // window.onload
+};
