@@ -37,6 +37,11 @@ var locationFinish = document.getElementById("locationFinish");
 document.getElementById("locationFind").value = "";
 document.getElementById("locationStart").value = "";
 document.getElementById("locationFinish").value = "";
+// Clean up local storage
+localStorage.removeItem('startPoint');
+localStorage.removeItem('endPoint');
+localStorage.removeItem('mapPointLat');
+localStorage.removeItem('mapPointLong');
 // Listener function calls
 browserGreeting();
 tabListener();
@@ -99,29 +104,46 @@ function mainButtonListener() {
 	mapMainButton.onclick = mapPopupHandler;
 }
 
+
 function directionsPopupHandler() {
-	findDirections();
 	var searchingTitle = document.getElementById("searchingTitle");
 	searchingTitle.innerHTML = "Finding Directions...";
+
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
-	setTimeout(function() {
-		searchingPopup.getAttributeNode("class").value = "hide";
-		directionsPopup.getAttributeNode("class").value = "show";
-	}, 2000);
+	
+	findDirections();
+
+	setInterval(function() {
+		if (localStorage.getItem('startPoint') != null && localStorage.getItem('startPoint') != null) {
+			searchingPopup.getAttributeNode("class").value = "hide";
+			directionsPopup.getAttributeNode("class").value = "show";
+		} else {
+			clearInterval();
+		}
+	}, 1000);
 	popupCloseHandler();
 }
 
+
 function mapPopupHandler() {
-	findMap();
 	var searchingTitle = document.getElementById("searchingTitle");
 	searchingTitle.innerHTML = "Finding Map...";
+
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
-	setTimeout(function() {
-		searchingPopup.getAttributeNode("class").value = "hide";
-		mapPopup.getAttributeNode("class").value = "show";
-	}, 3000);
+
+	findMap();
+	
+	
+	setInterval(function() {
+		if (localStorage.getItem('mapPointLat') != null && localStorage.getItem('mapPointLong') != null) {
+			searchingPopup.getAttributeNode("class").value = "hide";
+			mapPopup.getAttributeNode("class").value = "show";
+		} else {
+			clearInterval();
+		}
+	}, 1000);
 	popupCloseHandler();
 }
 
