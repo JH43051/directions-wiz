@@ -1,5 +1,6 @@
-// Wrapper function
 window.onload = function() {
+
+
 
 /////////////////////////////////////////////////////////////////////
 // Global variables
@@ -27,6 +28,32 @@ var disclaimerPopup = document.getElementById("disclaimerPopup");
 var requestPopup = document.getElementById("requestPopup");
 var locationStart = document.getElementById("locationStart");
 var locationFinish = document.getElementById("locationFinish");
+var directionsPopupLink = document.getElementById("directionsPopupLink");
+var mapPopupLink = document.getElementById("mapPopupLink");
+// Authenticate communication with Here.com backend services
+var platform = new H.service.Platform({
+  'app_id': 'EtNIgjLba6MC6edi57vR',
+  'app_code': 'powLhtVer-MQAOPqWwgwsA',
+	'useHTTPS': true
+});
+// Obtain the default map types from the platform object:
+var defaultLayers = platform.createDefaultLayers();
+// Instantiate (and display) a map object:
+var map = new H.Map(
+  document.getElementById("map"),
+  defaultLayers.normal.map,
+  {
+    zoom: 10,
+    center: {lat: 40.76, lng: -73.98} // NYC
+  }
+);
+// Create the default UI:
+var ui = H.ui.UI.createDefault(map, defaultLayers);
+// Enable the event system on the map instance:
+var mapEvents = new H.mapevents.MapEvents(map);
+// Instantiate the default behavior, providing the mapEvents object:
+var behavior = new H.mapevents.Behavior(mapEvents);
+
 
 
 ////////////////////////////////////////////////////////////////////
@@ -108,6 +135,7 @@ function mainButtonListener() {
 function directionsPopupHandler() {
 	var searchingTitle = document.getElementById("searchingTitle");
 	searchingTitle.innerHTML = "Finding Directions...";
+	directionsPopupLink.setAttribute("onclick", "window.open('https://www.google.com')"); // CHANGE ME
 
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
@@ -129,12 +157,12 @@ function directionsPopupHandler() {
 function mapPopupHandler() {
 	var searchingTitle = document.getElementById("searchingTitle");
 	searchingTitle.innerHTML = "Finding Map...";
+	mapPopupLink.setAttribute("onclick", "window.open('https://www.google.com')"); // CHANGE ME
 
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
 
 	findMap();
-	
 	
 	setInterval(function() {
 		if (localStorage.getItem('mapPointLat') != null && localStorage.getItem('mapPointLong') != null) {
@@ -146,6 +174,7 @@ function mapPopupHandler() {
 	}, 1000);
 	popupCloseHandler();
 }
+
 
 function linksPopupListener() {
 	var trafficLink = document.getElementById("trafficLink");
@@ -185,35 +214,42 @@ function planningPopupHandler() {
 	planningPopup.getAttributeNode("class").value = "linksPopups show";
 }
 
+
 function providersPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	providersPopup.getAttributeNode("class").value = "linksPopups show";
 }
+
 
 function benefitsPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	benefitsPopup.getAttributeNode("class").value = "linksPopups show";
 }
 
+
 function aboutPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	aboutPopup.getAttributeNode("class").value = "linksPopups show";
 }
+
 
 function contactPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	contactPopup.getAttributeNode("class").value = "linksPopups show";
 }
 
+
 function privacyPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	privacyPopup.getAttributeNode("class").value = "linksPopups show";
 }
 
+
 function termsPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
 	termsPopup.getAttributeNode("class").value = "linksPopups show";
 }
+
 
 function advertisingPopupHandler() {
 	popUpBackground.getAttributeNode("class").value = "show";
@@ -284,71 +320,6 @@ function startEndSwitchHandler() {
 }
 
 
-
-////////////////////////////////////////////////////////////////////////
-// Mapping Functionality
-////////////////////////////////////////////////////////////////////////
-
-// Authenticate communication with Here.com backend services
-var platform = new H.service.Platform({
-  'app_id': 'EtNIgjLba6MC6edi57vR',
-  'app_code': 'powLhtVer-MQAOPqWwgwsA',
-	'useHTTPS': true
-});
-
-// Obtain the default map types from the platform object:
-var defaultLayers = platform.createDefaultLayers();
-
-// Instantiate (and display) a map object:
-var map = new H.Map(
-  document.getElementById("map"),
-  defaultLayers.normal.map,
-  {
-    zoom: 10,
-    center: {lat: 40.76, lng: -73.98} // NYC
-  }
-);
-
-// Create the default UI:
-var ui = H.ui.UI.createDefault(map, defaultLayers);
-
-// Enable the event system on the map instance:
-var mapEvents = new H.mapevents.MapEvents(map);
-
-// Instantiate the default behavior, providing the mapEvents object:
-var behavior = new H.mapevents.Behavior(mapEvents);
-
-
-function findMap() {
-	var input = document.getElementById("locationFind").value;
-// Create the parameters for the geocoding request:
-	var geocodingParams = {
-			searchText: input
-		};
-	// Define a callback function to process the geocoding response:
-	var onResult = function(result) {
-		if (result.Response.View[0] == undefined) {
-			mapPopup.childNodes[1].innerHTML = "No Map Found";
-			mapPopup.childNodes[5].attributes[0].value = "./results-none.html";
-		} else {
-			var locations = result.Response.View[0].Result;
-			var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
-			var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
-			localStorage.setItem('mapPointLat', mapPointLat);
-			localStorage.setItem('mapPointLong', mapPointLong);
-		}
-	}
-	// Get an instance of the geocoding service:
-	var geocoder = platform.getGeocodingService();
-	// Call the geocode method with the geocoding parameters,
-	// the callback and an error callback function (called if a
-	// communication error occurs):
-	geocoder.geocode(geocodingParams, onResult, function(e) {
-		alert(e);
-	});
-}
-
-
 function findDirections() {
 	var startPoint = "";
 	var endPoint = "";
@@ -360,8 +331,9 @@ function findDirections() {
 	// and store them in local storage
 	var onResult = function(result) {
 		if (result.Response.View[0] == undefined) {
-			directionsPopup.childNodes[1].innerHTML = "No Directions Found";
-			directionsPopup.childNodes[5].attributes[0].value = "./results-none.html";
+			document.getElementById("directionsPopupH3").innerHTML = "No Directions Found";
+			directionsPopupLink.getAttributeNode("href").value = "./results-none.html";
+			localStorage.setItem('startPoint', startPoint);
 		} else {
 			var locations = result.Response.View[0].Result;
 			startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
@@ -381,8 +353,9 @@ function findDirections() {
 	// Change callback function to grab end location
 	onResult = function(result) {
 		if (result.Response.View[0] == undefined) {
-			directionsPopup.childNodes[1].innerHTML = "No Directions Found";
-			directionsPopup.childNodes[5].attributes[0].value = "./results-none.html";
+			document.getElementById("directionsPopupH3").innerHTML = "No Directions Found";
+			directionsPopupLink.getAttributeNode("href").value = "./results-none.html";
+			localStorage.setItem('endPoint', endPoint);
 		} else {
 			var locations = result.Response.View[0].Result;
 			endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
@@ -392,4 +365,37 @@ function findDirections() {
 	// Call geocode again
 	geocoder.geocode(geocodingParams, onResult, onError);
 }
+
+
+function findMap() {
+	var input = document.getElementById("locationFind").value;
+// Create the parameters for the geocoding request:
+	var geocodingParams = {
+			searchText: input
+		};
+	// Define a callback function to process the geocoding response:
+	var onResult = function(result) {
+		if (result.Response.View[0] == undefined) {
+			document.getElementById("mapPopupH3").innerHTML = "No Maps Found";
+			mapPopupLink.getAttributeNode("href").value = "./results-none.html";
+			localStorage.setItem('mapPointLat', mapPointLat);
+			localStorage.setItem('mapPointLong', mapPointLong);
+		} else {
+			var locations = result.Response.View[0].Result;
+			var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
+			var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
+			localStorage.setItem('mapPointLat', mapPointLat);
+			localStorage.setItem('mapPointLong', mapPointLong);
+		}
+	}
+	// Get an instance of the geocoding service:
+	var geocoder = platform.getGeocodingService();
+	// Call the geocode method with the geocoding parameters,
+	// the callback and an error callback function (called if a
+	// communication error occurs):
+	geocoder.geocode(geocodingParams, onResult, function(e) {
+		alert(e);
+	});
+}
+
 };

@@ -54,8 +54,9 @@
 #sideBlock {
 	float: left;
 	width: 400px;
+  height: 86vh;
 	background-color: #ffffff;
-	overflow: auto;
+	overflow: scroll;
 }
 
 #sideAdvert {
@@ -116,30 +117,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/*
+Here.com turn-by-turn panel
+*/
 
 .directions li span.arrow {
   display:inline-block;
