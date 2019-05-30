@@ -376,7 +376,7 @@ function findMap() {
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
 		if (result.Response.View[0] == undefined) {
-			document.getElementById("mapPopupH3").innerHTML = "No Maps Found";
+			document.getElementById("mapPopupH3").innerHTML = "No Map Found";
 			mapPopupLink.getAttributeNode("href").value = "./results-none.html";
 			localStorage.setItem('mapPointLat', mapPointLat);
 			localStorage.setItem('mapPointLong', mapPointLong);
