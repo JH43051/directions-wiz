@@ -139,6 +139,14 @@ function directionsPopupHandler() {
 
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
+
+	/*if (locationStart.value == "") {
+			locationStart.value = "xyx" // Giberish to prevent locked searching popup on empty field
+	}
+
+	if (locationFinish.value == "") {
+			locationFinish.value = "xyx"
+	}*/
 	
 	findDirections();
 
@@ -325,8 +333,11 @@ function findDirections() {
 	var endPoint = "";
 	var geocoder = platform.getGeocodingService();
 	var geocodingParams = {
-		searchText: locationStart.value
+		searchText: locationStart
 	};
+	if (locationStart.value == "") {
+		geocodingParams.searchText = "xyz"; // Giberish to prevent stuck search on empty field
+	}
 	// Set callback function to grab and format lat and long of start location
 	// and store them in local storage
 	var onResult = function(result) {
@@ -350,6 +361,9 @@ function findDirections() {
 	geocodingParams = {
 		searchText: locationFinish.value
 	};
+	if (locationFinish.value == "") {
+		geocodingParams.searchText = "xyz";
+	}
 	// Change callback function to grab end location
 	onResult = function(result) {
 		if (result.Response.View[0] == undefined) {
@@ -373,6 +387,9 @@ function findMap() {
 	var geocodingParams = {
 			searchText: input
 		};
+	if (input == "") {
+		geocodingParams.searchText = "xyz";
+	}
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
 		if (result.Response.View[0] == undefined) {
