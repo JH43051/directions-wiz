@@ -332,11 +332,12 @@ function findDirections() {
 	var startPoint = "";
 	var endPoint = "";
 	var geocoder = platform.getGeocodingService();
+	var input = locationStart.value;
 	var geocodingParams = {
-		searchText: locationStart
+		searchText: input
 	};
-	if (locationStart.value == "") {
-		geocodingParams.searchText = "xyz"; // Giberish to prevent stuck search on empty field
+	if (input == "") {
+		geocodingParams.searchText = "xyz"; // Gibberish to prevent stuck search on empty field
 	}
 	// Set callback function to grab and format lat and long of start location
 	// and store them in local storage
@@ -358,10 +359,11 @@ function findDirections() {
 	// Call geocode
 	geocoder.geocode(geocodingParams, onResult, onError);
 	// Change geocode parameters to the ending location input field
+	input = locationFinish.value
 	geocodingParams = {
-		searchText: locationFinish.value
+		searchText: input
 	};
-	if (locationFinish.value == "") {
+	if (input == "") {
 		geocodingParams.searchText = "xyz";
 	}
 	// Change callback function to grab end location
