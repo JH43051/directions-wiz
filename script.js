@@ -347,6 +347,8 @@ function findDirections() {
 			directionsPopupLink.getAttributeNode("href").value = "./results-none.html";
 			localStorage.setItem('startPoint', startPoint);
 		} else {
+			document.getElementById("directionsPopupH3").innerHTML = "Directions Found";
+			directionsPopupLink.getAttributeNode("href").value = "./results-directions.html";
 			var locations = result.Response.View[0].Result;
 			startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
 			localStorage.setItem('startPoint', startPoint);
@@ -373,6 +375,8 @@ function findDirections() {
 			directionsPopupLink.getAttributeNode("href").value = "./results-none.html";
 			localStorage.setItem('endPoint', endPoint);
 		} else {
+			document.getElementById("directionsPopupH3").innerHTML = "Directions Found";
+			directionsPopupLink.getAttributeNode("href").value = "./results-directions.html";
 			var locations = result.Response.View[0].Result;
 			endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
 			localStorage.setItem('endPoint', endPoint);
@@ -400,6 +404,8 @@ function findMap() {
 			localStorage.setItem('mapPointLat', mapPointLat);
 			localStorage.setItem('mapPointLong', mapPointLong);
 		} else {
+			document.getElementById("mapPopupH3").innerHTML = "Map Found";
+			mapPopupLink.getAttributeNode("href").value = "./results-map.html";
 			var locations = result.Response.View[0].Result;
 			var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
 			var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
