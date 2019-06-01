@@ -1,7 +1,4 @@
 window.onload = function() {
-
-
-
 /////////////////////////////////////////////////////////////////////
 // Global variables
 /////////////////////////////////////////////////////////////////////
@@ -30,6 +27,8 @@ var locationStart = document.getElementById("locationStart");
 var locationFinish = document.getElementById("locationFinish");
 var directionsPopupLink = document.getElementById("directionsPopupLink");
 var mapPopupLink = document.getElementById("mapPopupLink");
+var userLat = 40.76;
+var userLong = -73.98;
 // Authenticate communication with Here.com backend services
 var platform = new H.service.Platform({
   'app_id': 'EtNIgjLba6MC6edi57vR',
@@ -40,12 +39,12 @@ var platform = new H.service.Platform({
 var defaultLayers = platform.createDefaultLayers();
 // Instantiate (and display) a map object:
 var map = new H.Map(
-  document.getElementById("map"),
-  defaultLayers.normal.map,
-  {
-    zoom: 10,
-    center: {lat: 40.76, lng: -73.98} // NYC
-  }
+	document.getElementById("map"),
+	defaultLayers.normal.map,
+	{
+		zoom: 10,
+		center: {lat: userLat, lng: userLong} // NYC or user
+	}
 );
 // Create the default UI:
 var ui = H.ui.UI.createDefault(map, defaultLayers);
@@ -69,20 +68,34 @@ localStorage.removeItem('startPoint');
 localStorage.removeItem('endPoint');
 localStorage.removeItem('mapPointLat');
 localStorage.removeItem('mapPointLong');
-// Listener function calls
+// Get the user's browser and display custom greeting
 browserGreeting();
+// Start listeners
 tabListener();
 mainButtonListener();
 linksPopupListener()
 popupCloseListener();
 startEndSwitchListener();
+// If user geolocation can be obtained, update map with user coords
+if (navigator.geolocation) {
+	navigator.geolocation.getCurrentPosition(function(position) {
+		userLat = position.coords.latitude;
+		userLong = position.coords.longitude;
+		var geoInterval = setInterval(function() {
+			if (position.coords != null) {
+				map.setCenter({lat: userLat, lng: userLong});
+				clearInterval(geoInterval);
+			}
+		}, 500);
+	});
+}
+
 
 
 ////////////////////////////////////////////////////////////////////
 // Functions
 ////////////////////////////////////////////////////////////////////
 
-// Tests for user's browser and displays custom greeting
 function browserGreeting() {
 	var browserText = document.getElementById("browserGreet");
 	var greetText = "Get Free Maps and Driving Directions for";
@@ -100,6 +113,7 @@ function browserGreeting() {
 		browserText.innerHTML = "Get Free Maps and Driving Directions!";
 	}
 }
+
 
 function tabListener() {
 	tabMap.onclick = tabMapSwitcher;
@@ -462,7 +476,6 @@ function createMiniDirections() {
 		);
 	}
 
-
 	function onSuccess(result) {
 		var route = result.response.route[0];
 
@@ -471,17 +484,14 @@ function createMiniDirections() {
 		addSummaryToPanel(route.summary);
 	}
 
-
 	function onError(error) {
 		alert('Ooops!');
 	}
-
 
 	function addWaypointsToPanel(waypoints) {
 		var nodeH4 = document.createElement('h4'),
 			waypointLabels = [],
 			i;
-
 
 		for (i = 0;  i < waypoints.length; i += 1) {
 			waypointLabels.push(waypoints[i].label)
@@ -493,13 +503,11 @@ function createMiniDirections() {
 		routeInstructionsContainer.appendChild(nodeH4);
 	}
 
-
 	function addSummaryToPanel(summary) {
 		var summaryDiv = document.createElement('div'),
 		content = '';
 		content += '<b>Total distance</b>: ' + summary.distance  + 'm. <br/>';
 		content += '<b>Travel Time</b>: ' + summary.travelTime.toMMSS() + ' (in current traffic)';
-
 
 		summaryDiv.style.fontSize = 'small';
 		summaryDiv.style.marginLeft ='5%';
@@ -508,11 +516,7 @@ function createMiniDirections() {
 		routeInstructionsContainer.appendChild(summaryDiv);
 	}
 
-
 	function addManueversToPanel(route) {
-
-
-
 		var nodeOL = document.createElement('ol'),
 			i,
 			j;
@@ -521,7 +525,6 @@ function createMiniDirections() {
 		nodeOL.style.marginLeft ='5%';
 		nodeOL.style.marginRight ='5%';
 		nodeOL.className = 'directions';
-
 			// Add a marker for each maneuver
 		for (i = 0;  i < route.leg.length; i += 1) {
 			for (j = 0;  j < route.leg[i].maneuver.length; j += 1) {
@@ -540,15 +543,12 @@ function createMiniDirections() {
 				nodeOL.appendChild(li);
 			}
 		}
-
 		routeInstructionsContainer.appendChild(nodeOL);
 	}
-
 
 	Number.prototype.toMMSS = function() {
 		return  Math.floor(this / 60)  +' minutes '+ (this % 60)  + ' seconds.';
 	}
-
 
 	calculateRouteFromAtoB(platform);
 }
