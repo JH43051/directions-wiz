@@ -30,6 +30,7 @@ var locationStart = document.getElementById("locationStart");
 var locationFinish = document.getElementById("locationFinish");
 var directionsPopupLink = document.getElementById("directionsPopupLink");
 var mapPopupLink = document.getElementById("mapPopupLink");
+var interval = null;
 // Authenticate communication with Here.com backend services
 var platform = new H.service.Platform({
   'app_id': 'EtNIgjLba6MC6edi57vR',
@@ -139,18 +140,10 @@ function directionsPopupHandler() {
 
 	popUpBackground.getAttributeNode("class").value = "show";
 	searchingPopup.getAttributeNode("class").value = "show";
-
-	/*if (locationStart.value == "") {
-			locationStart.value = "xyx" // Giberish to prevent locked searching popup on empty field
-	}
-
-	if (locationFinish.value == "") {
-			locationFinish.value = "xyx"
-	}*/
 	
 	findDirections();
 
-	setInterval(function() {
+	interval = setInterval(function() {
 		if (localStorage.getItem('startPoint') != null && localStorage.getItem('startPoint') != null) {
 			searchingPopup.getAttributeNode("class").value = "hide";
 			directionsPopup.getAttributeNode("class").value = "show";
@@ -158,7 +151,6 @@ function directionsPopupHandler() {
 			clearInterval();
 		}
 	}, 1000);
-	popupCloseHandler();
 }
 
 
@@ -172,7 +164,7 @@ function mapPopupHandler() {
 
 	findMap();
 	
-	setInterval(function() {
+	interval = setInterval(function() {
 		if (localStorage.getItem('mapPointLat') != null && localStorage.getItem('mapPointLong') != null) {
 			searchingPopup.getAttributeNode("class").value = "hide";
 			mapPopup.getAttributeNode("class").value = "show";
@@ -180,7 +172,6 @@ function mapPopupHandler() {
 			clearInterval();
 		}
 	}, 1000);
-	popupCloseHandler();
 }
 
 
@@ -301,6 +292,7 @@ function popupCloseHandler() {
 	advertisingPopup.getAttributeNode("class").value = "linksPopups hide";
 	disclaimerPopup.getAttributeNode("class").value = "linksPopups hide";
 	requestPopup.getAttributeNode("class").value = "linksPopups hide";
+	clearInterval(interval);
 }
 
 
