@@ -30,7 +30,6 @@ var locationStart = document.getElementById("locationStart");
 var locationFinish = document.getElementById("locationFinish");
 var directionsPopupLink = document.getElementById("directionsPopupLink");
 var mapPopupLink = document.getElementById("mapPopupLink");
-var interval = null;
 // Authenticate communication with Here.com backend services
 var platform = new H.service.Platform({
   'app_id': 'EtNIgjLba6MC6edi57vR',
@@ -142,13 +141,18 @@ function directionsPopupHandler() {
 	searchingPopup.getAttributeNode("class").value = "show";
 	
 	findDirections();
-
-	interval = setInterval(function() {
-		if (localStorage.getItem('startPoint') != null && localStorage.getItem('startPoint') != null) {
+	// Checks every second until map data is pulled
+	var interval = setInterval(function() {
+		if (localStorage.getItem('startPoint') != null && localStorage.getItem('endPoint') != null) {
 			searchingPopup.getAttributeNode("class").value = "hide";
 			directionsPopup.getAttributeNode("class").value = "show";
-		} else {
-			clearInterval();
+			clearInterval(interval);
+			if (document.getElementById("directionsPopupH3").innerHTML == "No Directions Found") {
+				document.getElementById("miniDirections").getAttributeNode("class").value = "hide";
+			} else {
+				document.getElementById("miniDirections").getAttributeNode("class").value = "show";
+				createMiniDirections();
+			}
 		}
 	}, 1000);
 }
@@ -156,7 +160,7 @@ function directionsPopupHandler() {
 
 function mapPopupHandler() {
 	var searchingTitle = document.getElementById("searchingTitle");
-	searchingTitle.innerHTML = "Finding Map...";
+	searchingTitle.innerHTML = "Finding Maps...";
 	mapPopupLink.setAttribute("onclick", "window.open('https://www.google.com')"); // CHANGE ME
 
 	popUpBackground.getAttributeNode("class").value = "show";
@@ -164,12 +168,17 @@ function mapPopupHandler() {
 
 	findMap();
 	
-	interval = setInterval(function() {
+	var interval = setInterval(function() {
 		if (localStorage.getItem('mapPointLat') != null && localStorage.getItem('mapPointLong') != null) {
 			searchingPopup.getAttributeNode("class").value = "hide";
 			mapPopup.getAttributeNode("class").value = "show";
-		} else {
-			clearInterval();
+			clearInterval(interval);
+			if (document.getElementById("mapPopupH3").innerHTML == "No Maps Found") {
+				document.getElementById("miniMap").getAttributeNode("class").value = "hide";
+			} else {
+				document.getElementById("miniMap").getAttributeNode("class").value = "show";
+				createMiniMap();
+			}
 		}
 	}, 1000);
 }
@@ -292,7 +301,8 @@ function popupCloseHandler() {
 	advertisingPopup.getAttributeNode("class").value = "linksPopups hide";
 	disclaimerPopup.getAttributeNode("class").value = "linksPopups hide";
 	requestPopup.getAttributeNode("class").value = "linksPopups hide";
-	clearInterval(interval);
+	document.getElementById("miniMap").getAttributeNode("class").value = "hide";
+	document.getElementById("miniDirections").getAttributeNode("class").value = "hide";
 }
 
 
@@ -381,7 +391,7 @@ function findDirections() {
 
 function findMap() {
 	var input = document.getElementById("locationFind").value;
-// Create the parameters for the geocoding request:
+	// Create the parameters for the geocoding request:
 	var geocodingParams = {
 			searchText: input
 		};
@@ -391,12 +401,12 @@ function findMap() {
 	// Define a callback function to process the geocoding response:
 	var onResult = function(result) {
 		if (result.Response.View[0] == undefined) {
-			document.getElementById("mapPopupH3").innerHTML = "No Map Found";
+			document.getElementById("mapPopupH3").innerHTML = "No Maps Found";
 			mapPopupLink.getAttributeNode("href").value = "./results-none.html";
 			localStorage.setItem('mapPointLat', mapPointLat);
 			localStorage.setItem('mapPointLong', mapPointLong);
 		} else {
-			document.getElementById("mapPopupH3").innerHTML = "Map Found";
+			document.getElementById("mapPopupH3").innerHTML = "Maps Found";
 			mapPopupLink.getAttributeNode("href").value = "./results-map.html";
 			var locations = result.Response.View[0].Result;
 			var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
@@ -415,4 +425,156 @@ function findMap() {
 	});
 }
 
+
+function miniDirectionsResetter() {
+	document.getElementById("miniDirections").innerHTML = "";
+}
+
+
+function miniMapResetter() {
+	document.getElementById("miniMap").innerHTML = "";
+}
+
+
+function createMiniDirections() {
+	miniDirectionsResetter();
+
+	var startPoint = localStorage.getItem('startPoint');
+	var endPoint = localStorage.getItem('endPoint');
+	var routeInstructionsContainer = document.getElementById('miniDirections');
+
+	function calculateRouteFromAtoB(platform) {
+		var router = platform.getRoutingService(),
+			routeRequestParams = {
+				mode: 'fastest;car',
+				representation: 'display',
+				routeattributes : 'waypoints,summary,shape,legs',
+				maneuverattributes: 'direction,action',
+				waypoint0: startPoint,
+				waypoint1: endPoint
+			};
+
+
+		router.calculateRoute(
+			routeRequestParams,
+			onSuccess,
+			onError
+		);
+	}
+
+
+	function onSuccess(result) {
+		var route = result.response.route[0];
+
+		addWaypointsToPanel(route.waypoint);
+		addManueversToPanel(route);
+		addSummaryToPanel(route.summary);
+	}
+
+
+	function onError(error) {
+		alert('Ooops!');
+	}
+
+
+	function addWaypointsToPanel(waypoints) {
+		var nodeH4 = document.createElement('h4'),
+			waypointLabels = [],
+			i;
+
+
+		for (i = 0;  i < waypoints.length; i += 1) {
+			waypointLabels.push(waypoints[i].label)
+		}
+
+		nodeH4.textContent = waypointLabels.join(' - ');
+
+		routeInstructionsContainer.innerHTML = '';
+		routeInstructionsContainer.appendChild(nodeH4);
+	}
+
+
+	function addSummaryToPanel(summary) {
+		var summaryDiv = document.createElement('div'),
+		content = '';
+		content += '<b>Total distance</b>: ' + summary.distance  + 'm. <br/>';
+		content += '<b>Travel Time</b>: ' + summary.travelTime.toMMSS() + ' (in current traffic)';
+
+
+		summaryDiv.style.fontSize = 'small';
+		summaryDiv.style.marginLeft ='5%';
+		summaryDiv.style.marginRight ='5%';
+		summaryDiv.innerHTML = content;
+		routeInstructionsContainer.appendChild(summaryDiv);
+	}
+
+
+	function addManueversToPanel(route) {
+
+
+
+		var nodeOL = document.createElement('ol'),
+			i,
+			j;
+
+		nodeOL.style.fontSize = 'small';
+		nodeOL.style.marginLeft ='5%';
+		nodeOL.style.marginRight ='5%';
+		nodeOL.className = 'directions';
+
+			// Add a marker for each maneuver
+		for (i = 0;  i < route.leg.length; i += 1) {
+			for (j = 0;  j < route.leg[i].maneuver.length; j += 1) {
+				// Get the next maneuver.
+				maneuver = route.leg[i].maneuver[j];
+
+				var li = document.createElement('li'),
+					spanArrow = document.createElement('span'),
+					spanInstruction = document.createElement('span');
+
+				spanArrow.className = 'arrow '  + maneuver.action;
+				spanInstruction.innerHTML = maneuver.instruction;
+				li.appendChild(spanArrow);
+				li.appendChild(spanInstruction);
+
+				nodeOL.appendChild(li);
+			}
+		}
+
+		routeInstructionsContainer.appendChild(nodeOL);
+	}
+
+
+	Number.prototype.toMMSS = function() {
+		return  Math.floor(this / 60)  +' minutes '+ (this % 60)  + ' seconds.';
+	}
+
+
+	calculateRouteFromAtoB(platform);
+}
+
+
+function createMiniMap() {
+	miniMapResetter();
+	
+	var miniMap = new H.Map(
+		document.getElementById("miniMap"),
+		defaultLayers.normal.map,
+		{
+			zoom: 10,
+			center: {
+				lat: localStorage.getItem('mapPointLat'),
+				lng: localStorage.getItem('mapPointLong')
+			}
+		}
+	);
+
+	var ui = H.ui.UI.createDefault(miniMap, defaultLayers);
+	// Add marker
+	var	marker = new H.map.Marker({
+			lat: localStorage.getItem('mapPointLat'),
+			lng: localStorage.getItem('mapPointLong')
+		});
+  miniMap.addObject(marker);
+}
 };

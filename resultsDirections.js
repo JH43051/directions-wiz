@@ -192,10 +192,7 @@ function addManueversToMap(route){
  * Creates a series of H.map.Marker points from the route and adds them to the map.
  * @param {Object} route  A route as received from the H.service.RoutingService
  */
-function addWaypointsToPanel(waypoints){
-
-
-
+function addWaypointsToPanel(waypoints) {
   var nodeH3 = document.createElement('h3'),
     waypointLabels = [],
     i;
@@ -215,7 +212,7 @@ function addWaypointsToPanel(waypoints){
  * Creates a series of H.map.Marker points from the route and adds them to the map.
  * @param {Object} route  A route as received from the H.service.RoutingService
  */
-function addSummaryToPanel(summary){
+function addSummaryToPanel(summary) {
   var summaryDiv = document.createElement('div'),
    content = '';
    content += '<b>Total distance</b>: ' + summary.distance  + 'm. <br/>';
@@ -233,7 +230,7 @@ function addSummaryToPanel(summary){
  * Creates a series of H.map.Marker points from the route and adds them to the map.
  * @param {Object} route  A route as received from the H.service.RoutingService
  */
-function addManueversToPanel(route){
+function addManueversToPanel(route) {
 
 
 
@@ -269,7 +266,7 @@ function addManueversToPanel(route){
 }
 
 
-Number.prototype.toMMSS = function () {
+Number.prototype.toMMSS = function() {
   return  Math.floor(this / 60)  +' minutes '+ (this % 60)  + ' seconds.';
 }
 

@@ -75,6 +75,10 @@
 	overflow: auto;
 }
 
+#resultBlock {
+  padding-left: 10px;
+}
+
 .chevrons {
 	font-family: "Material Icons";
 	font-size: 1em;
@@ -277,6 +281,7 @@ code {
 }
 
 #routePanel {
+  padding: 15px 0px 30px 10px;
   font-family: 'Open Sans', sans-serif;
   color: rgb(102, 102, 102);
   font-size: 80%;

@@ -20,6 +20,12 @@ var map = new H.Map(
 
 var ui = H.ui.UI.createDefault(map, defaultLayers);
 
+var	marker = new H.map.Marker({
+		lat: localStorage.getItem('mapPointLat'),
+		lng: localStorage.getItem('mapPointLong')
+	});
+map.addObject(marker);
+
 var mapEvents = new H.mapevents.MapEvents(map);
 
 var behavior = new H.mapevents.Behavior(mapEvents);
