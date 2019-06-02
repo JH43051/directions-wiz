@@ -361,10 +361,14 @@ function findDirections() {
 		if (result.Response.View[0] == undefined) {
 			document.getElementById("directionsPopupH3").innerHTML = "No Directions Found";
 			directionsPopupLink.getAttributeNode("href").value = "./results-none.html";
+			directionsPopup.style.height = "380px";
+			document.getElementById("miniDirections").style.height = "0px";
 			localStorage.setItem('startPoint', startPoint);
 		} else {
 			document.getElementById("directionsPopupH3").innerHTML = "Directions Found";
 			directionsPopupLink.getAttributeNode("href").value = "./results-directions.html";
+			directionsPopup.style.height = "600px";
+			document.getElementById("miniDirections").style.height = "200px";
 			var locations = result.Response.View[0].Result;
 			startPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
 			localStorage.setItem('startPoint', startPoint);
@@ -389,10 +393,14 @@ function findDirections() {
 		if (result.Response.View[0] == undefined) {
 			document.getElementById("directionsPopupH3").innerHTML = "No Directions Found";
 			directionsPopupLink.getAttributeNode("href").value = "./results-none.html";
+			directionsPopup.style.height = "380px";
+			document.getElementById("miniDirections").style.height = "0px";
 			localStorage.setItem('endPoint', endPoint);
 		} else {
 			document.getElementById("directionsPopupH3").innerHTML = "Directions Found";
 			directionsPopupLink.getAttributeNode("href").value = "./results-directions.html";
+			directionsPopup.style.height = "600px";
+			document.getElementById("miniDirections").style.height = "200px";
 			var locations = result.Response.View[0].Result;
 			endPoint = "geo!" + locations[0].Location.DisplayPosition.Latitude + "," + locations[0].Location.DisplayPosition.Longitude;
 			localStorage.setItem('endPoint', endPoint);
@@ -417,11 +425,15 @@ function findMap() {
 		if (result.Response.View[0] == undefined) {
 			document.getElementById("mapPopupH3").innerHTML = "No Maps Found";
 			mapPopupLink.getAttributeNode("href").value = "./results-none.html";
+			mapPopup.style.height = "380px";
+			document.getElementById("miniMap").style.height = "0px";
 			localStorage.setItem('mapPointLat', mapPointLat);
 			localStorage.setItem('mapPointLong', mapPointLong);
 		} else {
 			document.getElementById("mapPopupH3").innerHTML = "Maps Found";
 			mapPopupLink.getAttributeNode("href").value = "./results-map.html";
+			mapPopup.style.height = "600px";
+			document.getElementById("miniMap").style.height = "200px";
 			var locations = result.Response.View[0].Result;
 			var mapPointLat = locations[0].Location.DisplayPosition.Latitude;
 			var mapPointLong =	locations[0].Location.DisplayPosition.Longitude;
