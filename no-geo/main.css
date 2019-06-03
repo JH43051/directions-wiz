@@ -1,0 +1,545 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700,800&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Open Sans', sans-serif;
+	letter-spacing: -.01em;
+}
+
+header {
+	min-height: 35px;
+	border-bottom: 2px solid #222222;
+}
+
+header h3 {
+	text-align: center;
+	padding-top: 4px;
+}
+
+#main {
+	background-image: url('./images/dark_line_10.png');
+	border-bottom: 2px solid #222222;
+}
+
+#map {
+	height: 96vh;
+	background-color: #c9efbb;
+	border-bottom: 2px solid #222222;
+	box-shadow: 0px 3px 3px lightgray;
+	position: relative;
+}
+
+#inputArea {
+    float: left;
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    z-index: 100;
+    width: 470px;
+}
+
+#mapTabs {
+    margin: 25px 0 3px 15px;
+    padding: 1px;
+}
+
+#tabMap, #tabDirections {
+    padding: 7px 30px;
+    margin: 0;
+    text-decoration: none;
+		border-radius: 10px 10px 0px 0px;
+		box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+}
+
+.active, .inactive:hover {
+	background-color: #ffffff;
+	color: #222222;
+}
+
+.inactive {
+	background-color: #222222;
+	color: #ffffff;
+}
+
+#formDirections {
+	position: absolute;
+	left: 0px;
+  top: 51.5px;
+  z-index: 110;
+}
+
+#locationStart, #locationFinish, #locationFind {
+	width: 94%;
+	height: 50px;
+	border: 1px solid #a5a5a5;
+	border-radius: 10px;
+	margin: 10px 0px 5px 0px;
+	padding-left: 20px;
+}
+
+#formMap {
+	position: absolute;
+}
+
+#rotateDirections {
+  position: absolute;
+  left: 5px;
+  top: 125px;
+  border: none;
+	background: none;
+	cursor: pointer;
+}
+
+#rotateIcon {
+	font-family: 'Material Icons';
+	color: #5b514e;
+	font-size: 2.5em;
+}
+
+#startIcon {
+	font-family: 'Material Icons';
+	color: #95c93d;
+	font-size: 2.5em;
+	position: absolute;
+  left: 2px;
+  top: 88px;
+}
+
+#finishIcon {
+	font-family: 'Material Icons';
+	color: #ee3432;
+	font-size: 2.5em;
+	position: absolute;
+  left: 2px;
+  top: 154px;
+}
+
+#mapIcon {
+	font-family: 'Material Icons';
+	color: #95c93d;
+	font-size: 2.5em;
+	position: absolute;
+  left: 2px;
+  top: 88px;
+}
+
+.mapForm {
+	width: 388px;
+  margin: 0 auto 0 auto;
+  padding: 40px 40px;
+  background: rgba(255,255,255,1.0);
+	border-radius: 10px;
+	height: 250px;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	text-align: center;
+}
+
+.mainButton {
+    width: 100%;
+    border: none;
+    background-color: #4c97f3;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 15px;
+    font-size: 24px;
+    /*text-shadow: 1px 1px #1d4a9d;*/
+		box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+    display: block;
+    text-align: center;
+		border-radius: 10px;
+		margin-top: 20px;
+		cursor: pointer;
+}
+
+#popUpBackground {
+	width: 100vw;
+	height: 100vh;
+	opacity: .5;
+	background-color: #222222;
+	z-index: 120;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+}
+
+#searchingPopup {
+	background-color: #ffffff;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	z-index: 125;
+	position: fixed;
+	width: 690px;
+	height: 310px;
+	top: 50%;
+	left: 50%;
+	margin-top: -155px; /* Negative half of height. */
+	margin-left: -345px; /* Negative half of width. */
+}
+
+#searchingPopup h3, #directionsPopup h3, #mapPopup h3 {
+	color: #f7941d;
+	font-size: 2.8em;
+	font-weight: bold;
+	border-radius: 10px;
+	margin-top: 50px;
+}
+
+#searchingPopup p, #directionsPopup p, #mapPopup p {
+	font-size: 1.1em;
+	margin: 30px 75px 20px 75px;
+}
+
+#mapPopup, #directionsPopup {
+	background-color: #ffffff;
+	border-radius: 10px;
+	text-align: center;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	z-index: 125;
+	position: fixed;
+	width: 690px;
+	height: 600px;
+	top: 50%;
+	left: 50%;
+	margin-top: -300px; /* Negative half of height. */
+	margin-left: -345px; /* Negative half of width. */
+}
+
+#miniDirections {
+	width: 650px;
+	height: 200px;
+	margin: 10px auto 10px auto;
+  color: rgb(102, 102, 102);
+  font-size: 80%;
+	overflow: scroll;
+}
+
+#miniMap {
+	width: 650px;
+	height: 200px;
+	margin: 10px auto 10px auto;
+}
+
+.popupCloseIcon {
+	font-family: "Material Icons";
+	color: #222222;
+	opacity: .3;
+	font-size: 2em;
+	position: absolute;
+	top: 5px;
+	right: 10px;
+	transition: opacity .3s;
+	cursor: pointer;
+}
+
+.popupCloseIcon:hover {
+	opacity: 1;
+}
+
+.show {
+	visibility: visible;
+}
+
+.hide {
+	visibility: hidden;
+}
+
+.popupButton {
+    width: 400px;
+		border: none;
+    background-color: #4c97f3;
+    color: #ffffff;
+    font-weight: 800;
+    padding: 30px 15px 15px 15px;
+    font-size: 2.8em;
+		line-height: .5em;
+    /*text-shadow: 1px 1px #1d4a9d;*/
+		box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+    display: block;
+    text-align: center;
+		border-radius: 10px;
+		margin: 20px auto 0px auto;
+		cursor: pointer;
+		transition: background-color 1s;
+		text-decoration: none;
+}
+
+.popupButton:hover {
+	background-color: #f7941d;
+}
+
+.tagline {
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.chevrons {
+	font-family: "Material Icons";
+	font-size: 1em;
+	position: relative;
+	top: 10px;
+}
+
+#links {
+	text-align: center;
+}
+
+#links ul {
+	list-style: none;
+	margin: 20px 0px 20px 0px;
+}
+
+#links ul li {
+	display: inline;
+	margin: 0px 10px 0px 10px;
+	color: #0b84ab;
+	border-bottom: 1px solid #0b84ab;
+	cursor: pointer;
+	transition: border-bottom-color;
+}
+
+#links ul li:hover {
+	border-bottom: none;
+}
+
+.linksPopups {
+	max-width: 50%;
+	max-height: 50%;
+	background-color: #ffffff;
+	border-radius: 10px;
+	padding: 20px;
+	box-shadow: 5px 5px 3px rgba(90, 90, 90, 0.1);
+	z-index: 125;
+	position: fixed;
+	top: 25%;
+	left: 50%;
+	overflow: auto;
+	margin-left: -25%; /* Negative half of width. */
+}
+
+#content {
+	padding: 50px;
+}
+
+#contentMaps, #contentDirections {
+	width: 90%;
+	min-height: 250px;
+	margin: 20px auto 20px auto;
+	padding: 20px;
+	background-color: rgba(255, 255, 255, 0);
+	border-radius: 10px;
+	box-shadow: 0px 0px 0px lightgrey;
+	transition: box-shadow .3s, background-color .3s;
+}
+
+#contentMaps:hover, #contentDirections:hover {
+	background-color: rgba(255, 255, 255, 1);
+	box-shadow: 2px 2px 3px lightgrey;
+}
+
+#content img {
+	width: 248px;
+	height: 181px;
+	float: left;
+	margin-top: 20px;
+	border-radius: 10px;
+}
+
+#content p {
+	clear: none;
+	padding: 20px 0px 25px 300px;
+}
+
+footer {
+	min-height: 75px;
+	background-color: #e7e7e7;
+}
+
+footer p {
+	font-size: .7em;
+	padding: 10px 0px 10px 100px;
+}
+
+footer ul {
+	font-size: .7em;
+	list-style: none;
+	padding: 0px 0px 0px 100px;
+}
+
+footer ul li {
+	display: inline;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+
+
+/*
+Here.com turn-by-turn panel
+*/
+
+.directions li span.arrow {
+  display:inline-block;
+  min-width:28px;
+  min-height:28px;
+  background-position:0px;
+  background-image: url("https://raw.githubusercontent.com/heremaps/jsfiddle-github/master/map-with-route-from-a-to-b/img/arrows.png");
+  position:relative;
+  top:8px;
+}
+.directions li span.depart  {
+  background-position:-28px;
+}
+.directions li span.rightUTurn  {
+  background-position:-56px;
+}
+.directions li span.leftUTurn  {
+  background-position:-84px;
+}
+.directions li span.rightFork  {
+  background-position:-112px;
+}
+.directions li span.leftFork  {
+  background-position:-140px;
+}
+.directions li span.rightMerge  {
+  background-position:-112px;
+}
+.directions li span.leftMerge  {
+  background-position:-140px;
+}
+.directions li span.slightRightTurn  {
+  background-position:-168px;
+}
+.directions li span.slightLeftTurn{
+  background-position:-196px;
+}
+.directions li span.rightTurn  {
+  background-position:-224px;
+}
+.directions li span.leftTurn{
+  background-position:-252px;
+}
+.directions li span.sharpRightTurn  {
+  background-position:-280px;
+}
+.directions li span.sharpLeftTurn{
+  background-position:-308px;
+}
+.directions li span.rightRoundaboutExit1 {
+  background-position:-616px;
+}
+.directions li span.rightRoundaboutExit2 {
+  background-position:-644px;
+}
+
+.directions li span.rightRoundaboutExit3 {
+  background-position:-672px;
+}
+
+.directions li span.rightRoundaboutExit4 {
+  background-position:-700px;
+}
+
+.directions li span.rightRoundaboutPass {
+  background-position:-700px;
+}
+
+.directions li span.rightRoundaboutExit5 {
+  background-position:-728px;
+}
+.directions li span.rightRoundaboutExit6 {
+  background-position:-756px;
+}
+.directions li span.rightRoundaboutExit7 {
+  background-position:-784px;
+}
+.directions li span.rightRoundaboutExit8 {
+  background-position:-812px;
+}
+.directions li span.rightRoundaboutExit9 {
+  background-position:-840px;
+}
+.directions li span.rightRoundaboutExit10 {
+  background-position:-868px;
+}
+.directions li span.rightRoundaboutExit11 {
+  background-position:896px;
+}
+.directions li span.rightRoundaboutExit12 {
+  background-position:924px;
+}
+.directions li span.leftRoundaboutExit1  {
+  background-position:-952px;
+}
+.directions li span.leftRoundaboutExit2  {
+  background-position:-980px;
+}
+.directions li span.leftRoundaboutExit3  {
+  background-position:-1008px;
+}
+.directions li span.leftRoundaboutExit4  {
+  background-position:-1036px;
+}
+.directions li span.leftRoundaboutPass {
+  background-position:1036px;
+}
+.directions li span.leftRoundaboutExit5  {
+  background-position:-1064px;
+}
+.directions li span.leftRoundaboutExit6  {
+  background-position:-1092px;
+}
+.directions li span.leftRoundaboutExit7  {
+  background-position:-1120px;
+}
+.directions li span.leftRoundaboutExit8  {
+  background-position:-1148px;
+}
+.directions li span.leftRoundaboutExit9  {
+  background-position:-1176px;
+}
+.directions li span.leftRoundaboutExit10  {
+  background-position:-1204px;
+}
+.directions li span.leftRoundaboutExit11  {
+  background-position:-1232px;
+}
+.directions li span.leftRoundaboutExit12  {
+  background-position:-1260px;
+}
+.directions li span.arrive  {
+  background-position:-1288px;
+}
+.directions li span.leftRamp  {
+  background-position:-392px;
+}
+.directions li span.rightRamp  {
+  background-position:-420px;
+}
+.directions li span.leftExit  {
+  background-position:-448px;
+}
+.directions li span.rightExit  {
+  background-position:-476px;
+}
+
+.directions li span.ferry  {
+  background-position:-1316px;
+}
+
+code {
+  color: #124191;
+  letter-spacing: -0.03em;
+}
+
+b, strong {
+  color: black;
+}
+
+code {
+  font-weight: 700;
+  font-size: 120%;
+}

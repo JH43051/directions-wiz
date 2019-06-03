@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Directions Wiz | Driving Directions & Maps</title>
+	<link rel="stylesheet" href="./main.css">
+	<link rel="stylesheet" href="./loading.css">
+	<script src="./script.js"></script>
+	<!-- Here.com map libraries  -->
+	<script src="https://js.api.here.com/v3/3.0/mapsjs-core.js"
+  type="text/javascript" charset="utf-8"></script>
+	<script src="https://js.api.here.com/v3/3.0/mapsjs-service.js"
+  type="text/javascript" charset="utf-8"></script>
+	<script src="https://js.api.here.com/v3/3.0/mapsjs-ui.js" 
+      type="text/javascript" charset="utf-8"></script>
+	<script src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js" 
+     type="text/javascript" charset="utf-8"></script>
+	<!-- Here.com stylesheets -->
+	<link rel="stylesheet" type="text/css" 
+      href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+</head>
+
+<body>
+	<header>
+		<h3 id="browserGreet"></h3>
+	</header>
+
+	<div id="main">
+		<div id="map">
+			<div id="inputArea">
+				<div id="mapTabs">
+					<a href="#" id="tabMap" class="inactive">Map</a>
+					<a href="#" id="tabDirections" class="active">Directions</a>
+				</div>
+
+				<form id="formDirections" class="mapForm" action="/?v=results" method="post">
+					<h2>Get Driving Directions</h2>
+					<button id="rotateDirections" type="button"><span id="rotateIcon" class="material-icons">cached</span></button>
+					<span id="startIcon" class="material-icons">place</span>
+					<input id="locationStart" type="text" name="location-start" 
+						placeholder="Enter Address, Business or Landmark" onfocus="this.value='';" /><br />
+					<span id="finishIcon" class="material-icons">place</span>
+					<input id="locationFinish" type="text" name="location-finish" 
+						placeholder="Enter Address, Business or Landmark" onfocus="this.value='';" />
+					<button id="dirMainButton" class="mainButton" type="button">Get Directions</button>
+				</form>
+
+				<form id="formMap" class="mapForm" action="/?v=results" method="post">
+					<h2>Search Map</h2>
+					<span id="mapIcon" class="material-icons">place</span>
+					<input id="locationFind" type="text" name="location-find" 
+						placeholder="Enter Address or City">
+					<button id="mapMainButton" type="button" class="mainButton">Search</button>
+				</form>
+			</div> <!-- #inputArea -->
+		</div> <!-- #map -->
+
+		<div id="links">
+			<ul>
+				<li id="trafficLink">Use Traffic Reports for Safer Driving</li>
+				<li id="planningLink">Map Planning</li>
+				<li id="providersLink">Map Providers</li>
+				<li id="benefitsLink">Benefits of Online Maps</li>
+			</ul>
+		</div>
+
+		<div id="content">
+			<div id="contentMaps">
+				<h1>Maps</h1>
+				<img src="./images/22fab07f361159e646b4eda66a2b982e.jpg">
+				<p>
+					Online Maps take you to your destinations with ease and security.
+					<br><br>
+					Now make your every journey a completely hassle free and enjoyable
+					experience with online maps. From finding specific locations, driving
+					directions and neighborhood viewing, it helps you pursuing effective
+					time management by knowing the time and distance to and from the
+					locations.
+					<br><br>
+					MapsOnline.us's user friendly interface is accessible to all,
+					understandable to even non-GIS experts, offering high quality and
+					fast data visualization for locations and driving directions. You
+					can access the online maps portal anytime, from any device.
+					<br><br>
+					Online maps are continually updated, with addition and changes to existing
+					data base, enabling you experience accurate information every time
+					you log in.
+				</p>
+			</div>
+
+			<div id="contentDirections">
+				<h1>Driving Directions</h1>
+				<img src="./images/1576591.jpg">
+				<p>
+					No need to worry about searching locations and reaching your
+					destinations. Now you have a reliable driving guide that is
+					accessible 24/7.
+					<br><br>
+					Whether it's about searching locations,
+					knowing alternative routes and determining travel time and
+					distances between areas, you can plan everything ahead of your
+					journey through online mapping portals that generate visualization
+					of your pertaining search.
+					<br><br>
+					Instantly know about your searched
+					queries and keep your traveling stress free and secure. Online
+					mapping, as per defined search criteria, brings accurate and
+					updated information to you in few clicks. It allows cheaper,
+					more frequent and efficient data updates, custom map content
+					and availability of geographic information.
+				</p>
+			</div>
+		</div>
+	</div> <!-- #main-->
+
+	<footer>
+		<p>
+			©2019. Pwnage, LLC. All Rights Reserved. DirectionsWiz.com
+		</p>
+		<ul>
+			<li id="aboutLink">About Us</li> | 
+			<li id="contactLink">Contact Us</li> | 
+			<li id="privacyLink">Privacy Policy</li> | 
+			<li id="termsLink">Terms and Conditions</li> | 
+			<li id="advertisingLink">Advertising Disclaimer</li> | 
+			<li id="disclaimerLink">Search Disclaimer</li> | 
+			<li id="requestLink">Removal Request</li>
+		</ul>
+		<p>
+			Disclaimer: All trademarks are the property of their respective
+			owners. No affiliation or endorsement of MapQuest, Map Quest,
+			MapQuest.com, Yahoo.com, Google, Google, or GoogleMaps.com is
+			intended or implied.
+		</p>
+	</footer>
+
+	<!-- Pop Ups -->
+	<div id="popUpBackground" class="hide"></div>
+
+	<div id="searchingPopup" class="hide">
+		<h3 id="searchingTitle"></h3>
+		<div class="lds-grid">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+	</div>
+
+	<div id="directionsPopup" class="hide">
+		<h3 id="directionsPopupH3">Directions Found</h3>
+		<div id="miniDirections" class="hide"></div>
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<a id="directionsPopupLink" href="./results-directions.html" class="popupButton">
+			<span class="chevrons material-icons">fast_forward</span>
+				Continue
+			<span class="chevrons material-icons">fast_rewind</span>
+			<br>
+			<span class="tagline">(access full maps and driving directions)</span>
+		</a>
+		<p>
+			Install the New Free OnlineRouteFinder™ browser extension 
+			to get your driving directions and maps.
+		</p>
+	</div>
+
+	<div id="mapPopup" class="hide">
+		<h3 id="mapPopupH3">Maps Found</h3>
+		<div id="miniMap" class="hide"></div>
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<a  id="mapPopupLink" href="./results-map.html" class="popupButton" onclick="window.open('http://www.google.com')">
+			<span class="chevrons material-icons">fast_forward</span>
+				Continue
+			<span class="chevrons material-icons">fast_rewind</span>
+			<br>
+			<span class="tagline">(access full maps and driving directions)</span>
+		</a>
+		<p>
+			Install the New Free OnlineRouteFinder™ browser extension 
+			to get your driving directions and maps.
+		</p>
+	</div>
+
+	<div id="trafficPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Using Traffic Reports and Maps for Safer Driving</h2>
+		<br><br>
+		<p>
+			Be a more updated and alert driver by using traffic reports and maps 
+			available for ensuring safer driving experience.
+			<br><br>
+			Online maps are going beyond location searching and incorporating 
+			advancer technologies to generate traffic report and custom maps 
+			for the drivers easily accessible, understandable and used by all.
+			<br><br>
+			Get critical updates in advance about your desired and alternative 
+			routes to avoid traffic, construction, and poor road conditions.
+			<br><br>
+			In severe weather, this features allows you to be safe by keeping 
+			you informed and suggesting alternative routes to follow. The 
+			custom traffic reports and maps feature helps you get the exact 
+			information you want, saving your time and taking you to your 
+			destination on time.
+		</p>
+	</div>
+
+	<div id="planningPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Map Planning</h2>
+		<br><br>
+		<p>
+			With Map planning feature offered by online mapping portals, 
+			almost everyone can easily find a way to a destination in few 
+			seconds.
+			<br><br>
+			The map planning enables drivers to plan their trip effectively 
+			and make it as straight as possible. Once you get accurate 
+			information through the portal, you can better plan ahead to save 
+			your time and reduce stress by knowing the alternative routes in 
+			advance in case if your route is facing a bad condition.
+			<br><br>
+			For the tourists, the map planning is a heaven since it greatly 
+			helps them seeing more attraction around and reaching there 
+			easily, safely and timely.
+			<br><br>
+			With map planning, you get the wealth of information including 
+			layout of roads, cities and towns locations, geographical 
+			features, state boundaries and restaurant reviews, all with 
+			satellite images.
+		</p>
+	</div>
+
+	<div id="providersPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Map Providers</h2>
+		<br><br>
+		<p>
+			The Map Providers give you valuable guidance for directions for 
+			your trips by car, foot or public transportation.
+			<br><br>
+			It has also exclusively added local train and bus schedules in 
+			the interface for cities including stop numbers and respective 
+			transfer points.
+			<br><br>
+			Map Providers listed such as Google Maps®, Mapquest®, Bing Maps®, 
+			Yahoo Maps®l and other are incorporating more exclusive and 
+			technologically enhanced features. This is for the ease of drivers 
+			and making sure their safety through accurate information 
+			availability regarding routes, alternative routes, traffic reports, 
+			custom maps and much more.
+			<br><br>
+			Many map providers also provide in-time airline information like 
+			ticket price and carriers that serve specific destinations. 
+		</p>
+	</div>
+
+	<div id="benefitsPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Benefits of Online Maps</h2>
+		<br><br>
+		<p>
+			Make your life easier with online maps software.
+			<br><br>
+			Just install the app to have the easiest, safest and hassle free 
+			trips. No delay, no interruption and no risk throughout the 
+			route, since online maps inform you in advance all information 
+			pertaining to your trip including destination locations, routes, 
+			alternative routes, route conditions, custom maps and so on.
+			<br><br>
+			All this valued information is available in an instant once you 
+			input. It saves your time, lets you plan your route in advance, 
+			reduces your stress while driving and enables seeing more 
+			attractions around.
+			<br><br>
+			What's more? You can always share the information result with your 
+			loved ones, family and friends at the moment. 
+		</p>
+	</div>
+
+	<div id="aboutPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>About Us!</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+
+	<div id="contactPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Got a Question for Us?</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+
+	<div id="privacyPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Privacy Policy</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+
+	<div id="termsPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Terms and Conditions</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+
+	<div id="advertisingPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Advertising Disclaimer</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+
+	<div id="disclaimerPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Search Disclaimer</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+
+	<div id="requestPopup" class="linksPopups hide">
+		<span class="popupCloseIcon material-icons">highlight_off</span>
+		<h2>Intellectual Property Removal Request and Takedowns Policy</h2>
+		<br><br>
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</p>
+	</div>
+</body>
+
+</html>
